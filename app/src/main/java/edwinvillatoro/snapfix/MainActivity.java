@@ -7,8 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,7 +28,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
 
     private Toolbar mToolbar;
@@ -82,6 +86,23 @@ public class MainActivity extends AppCompatActivity {
                 uploadPictureToDatabase();
             }
         });
+
+        // nav drawer functionality
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
+        final ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
+                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                //hideKeyBoard();
+                getCurrentFocus().clearFocus();
+                super.onDrawerOpened(drawerView);
+            }
+        };
+        drawer.setDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         //TODO: make mBtnNoPicture take you to another activity
         mBtnNoPicture.setOnClickListener(new View.OnClickListener() {
@@ -157,13 +178,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            // set the progress dialog
-            mProgressDialog.setMessage("Uploading Image...");
-            mProgressDialog.show();
-
             // get the camera image
             Bundle extras = data.getExtras();
-            mImageBitmap = (Bitmap) data.getExtras().get("data");
+            mImageBitmap = (Bitmap) extras.get("data");
 
             // set the image into the imageview
             mImage.setImageBitmap(mImageBitmap);
@@ -184,4 +201,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
+    }
 }
