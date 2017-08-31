@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "550819610838",
+    "firebase_url": "https://snapfix-aaf12.firebaseio.com",
+    "project_id": "snapfix-aaf12",
+    "storage_bucket": "snapfix-aaf12.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:550819610838:android:5d5eae4e20ae74f8",
+        "android_client_info": {
+          "package_name": "edwinvillatoro.snapfix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "550819610838-oktdhjs5vu6m8fbd1n2cm09t21083acd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuVjyS_sDf8pXa7u2j-PtWLMWknIX-F5A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
