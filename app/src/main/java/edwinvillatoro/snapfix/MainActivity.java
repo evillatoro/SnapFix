@@ -84,7 +84,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //TODO: make mBtnNoPicture take you to another activity
-
+        mBtnNoPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NoPictureActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         //TODO: check permissions for going into gallery
