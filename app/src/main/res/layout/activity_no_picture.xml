@@ -5,6 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="edwinvillatoro.snapfix.NoPictureActivity">
+    <include
+        layout="@layout/app_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
 
     <EditText
         android:id="@+id/noPic_descriptionBox"
@@ -12,13 +18,14 @@
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/noPic_cancelButton"
-        android:layout_marginBottom="60dp"/>
+        android:layout_marginBottom="60dp"
+        android:background="@android:color/background_light"/>
 
     <Spinner
         android:id="@+id/noPic_problemTypeBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="120dp"
         android:layout_centerHorizontal="true"/>
 
     <TextView
@@ -27,7 +34,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/noPic_problemTypeBox"
         android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/background_light"/>
 
     <Button
         android:id="@+id/noPic_submitButton"

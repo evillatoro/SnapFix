@@ -2,4 +2,12 @@
     <string name="app_name">SnapFix</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string-array name="problem_array">
+        <item>Kitchen</item>
+        <item>Plumbing</item>
+        <item>A/C and Heating</item>
+    </string-array>
+
+
 </resources>
