@@ -1,13 +1,17 @@
 package edwinvillatoro.snapfix;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -43,6 +48,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private Button mBtnChooseFromGallery, mBtnCamera, mBtnUpload, mBtnNoPicture;
 
+
+    private static final int REQUEST_LOCATION = 1;
+    Button button;
+    TextView textView;
+    LocationManager locationManager;
+    String lattitude,longitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // initialize Firebase
         mFirebaseStorage = FirebaseStorage.getInstance();
-        mStorageReference = mFirebaseStorage.getReference().child("images");
+        mStorageReference = mFirebaseStorage.getReference();
 
         // set custom toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolBar);
@@ -115,7 +127,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //TODO: check permissions for going into gallery
+
         checkPermissions();
+
+        button = (Button) findViewById(R.id.button_location);
+        ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                GpsTracker gt = new GpsTracker(getApplicationContext());
+                Location l = gt.getLocation();
+                if( l == null){
+                    Toast.makeText(getApplicationContext(),"GPS unable to get Value",Toast.LENGTH_SHORT).show();
+                }else {
+                    double lat = l.getLatitude();
+                    double lon = l.getLongitude();
+                    Toast.makeText(getApplicationContext(),"GPS Lat = "+lat+"\n lon = "+lon,Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void launchGalleryIntent() {
@@ -205,4 +236,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
     }
+
+
 }

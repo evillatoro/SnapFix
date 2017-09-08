@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "550819610838-hmad4t0qho85gu98l1rnimq29bnria7j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edwinvillatoro.snapfix",
+            "certificate_hash": "7b462abcf19d12c7c0e952285b86d0f39cb71e7a"
+          }
+        },
+        {
           "client_id": "550819610838-oktdhjs5vu6m8fbd1n2cm09t21083acd.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "550819610838-oktdhjs5vu6m8fbd1n2cm09t21083acd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
