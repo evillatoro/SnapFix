@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PICK_IMAGE_REQUEST = 2;
     private Uri filePath;
-
     private Button mBtnChooseFromGallery, mBtnCamera, mBtnNoPicture;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        mBtnNoPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NoPictureActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // nav drawer functionality
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
         final ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
@@ -70,14 +78,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        mBtnNoPicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NoPictureActivity.class);
-                startActivity(intent);
-            }
-        });
 
         //TODO: check permissions for going into gallery
         checkPermissions();
@@ -112,14 +112,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             s.putExtra("camera", true);
             s.putExtra("imageBitmap", (Bitmap) extras.get("data"));
             startActivity(s);
-
         } else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
-
-                Intent s = new Intent(MainActivity.this, NoPictureActivity.class);
-                s.putExtra("gallery", true);
-                s.putExtra("filePath", data.getData());
-                startActivity(s);
+            Intent s = new Intent(MainActivity.this, NoPictureActivity.class);
+            s.putExtra("gallery", true);
+            s.putExtra("filePath", data.getData());
+            startActivity(s);
         }
     }
 

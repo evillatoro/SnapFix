@@ -29,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -39,21 +40,19 @@ public class NoPictureActivity extends AppCompatActivity {
     private Spinner typeSpinner;
     private TextView locationView;
     private EditText descriptionBox;
-    private Button submitButton;
-    private Button cancelButton;
+    private Button submitButton, cancelButton;
     private Toolbar noPicToolbar;
 
     private FirebaseDatabase database;
     private DatabaseReference reports_ref;
-
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mStorageReference;
 
     private Double latitude, longitude;
     private ImageView imageView;
     private ProgressDialog mProgressDialog;
-
     private Bitmap mImageBitmap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,20 +120,25 @@ public class NoPictureActivity extends AppCompatActivity {
         getUserCurrentLocation();
     }
 
+
     private void addReport() {
         String type = typeSpinner.getSelectedItem().toString();
         String description = descriptionBox.getText().toString();
 
         if (!TextUtils.isEmpty(description)) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-            String timestamp = simpleDateFormat.format(new Date());
+            Date date = new Date();
+            String id = Long.toString(date.getTime());
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+            String timestamp = sdf.format(date);
 
-            String id = reports_ref.push().getKey();
-            Report report = new Report(id, timestamp, type, "N/A", description);
-            locationView.setText(id);
+            NumberFormat nf = NumberFormat.getInstance();
+            nf.setMaximumFractionDigits(4);
+            String location = nf.format(latitude) + "," + nf.format(longitude);
+
+            //String id = reports_ref.push().getKey();
+            Report report = new Report(id, timestamp, type, location, description);
             reports_ref.child(id).setValue(report);
-            Toast.makeText(this, "Your request has been submitted", Toast.LENGTH_SHORT).show();
-            uploadPictureToDatabase();
+            uploadPictureToDatabase(id);
         } else {
             Toast.makeText(this, "The description cannot be left blank", Toast.LENGTH_SHORT).show();
         }
@@ -147,17 +151,16 @@ public class NoPictureActivity extends AppCompatActivity {
         if (l == null){
             Toast.makeText(getApplicationContext(),"GPS unable to get Value",Toast.LENGTH_SHORT).show();
         } else {
-            double lat = l.getLatitude();
-            double lon = l.getLongitude();
-
-            latitude = lat;
-            longitude = lon;
-            Toast.makeText(getApplicationContext(),"GPS\nLat = "+lat+"\n lon = "+lon,Toast.LENGTH_SHORT).show();
-            locationView.setText("GPS\n Lat = "+lat+"\n lon = "+lon);
+            latitude = l.getLatitude();
+            longitude = l.getLongitude();
+            NumberFormat nf = NumberFormat.getInstance();
+            nf.setMaximumFractionDigits(4);
+            //Toast.makeText(getApplicationContext(),"GPS\nLat = "+lat+"\n lon = "+lon,Toast.LENGTH_SHORT).show();
+            locationView.setText(" GPS:     " + nf.format(latitude) + ", " + nf.format(longitude));
         }
     }
 
-    private void uploadPictureToDatabase() {
+    private void uploadPictureToDatabase(String id) {
         // set the progress dialog
         mProgressDialog.setMessage("Uploading Image...");
         mProgressDialog.show();
@@ -171,7 +174,7 @@ public class NoPictureActivity extends AppCompatActivity {
             StorageReference storageRef = mStorageReference.child("images");
 
             //name of the image file (added time to have different files to avoid rewrite on the same file)
-            StorageReference imagesRef = storageRef.child("filename" + new Date().getTime());
+            StorageReference imagesRef = storageRef.child("filename_" + id);
 
             //upload image
             UploadTask uploadTask = imagesRef.putBytes(dataBAOS);
@@ -186,15 +189,18 @@ public class NoPictureActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     // handle successful upload
-                    Toast.makeText(getApplicationContext(), "Uploading successful", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Uploading successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Your request has been submitted", Toast.LENGTH_SHORT).show();
                     mProgressDialog.dismiss();
                     finish();
                 }
             });
 
         } else {
-            Toast.makeText(getApplicationContext(), "Null", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Your request has been submitted", Toast.LENGTH_SHORT).show();
             mProgressDialog.dismiss();
+            finish();
         }
     }
 }
