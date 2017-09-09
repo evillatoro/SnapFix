@@ -152,7 +152,8 @@ public class NoPictureActivity extends AppCompatActivity {
 
             latitude = lat;
             longitude = lon;
-            Toast.makeText(getApplicationContext(),"GPS Lat = "+lat+"\n lon = "+lon,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"GPS\nLat = "+lat+"\n lon = "+lon,Toast.LENGTH_SHORT).show();
+            locationView.setText("GPS\n Lat = "+lat+"\n lon = "+lon);
         }
     }
 
