@@ -59,6 +59,14 @@
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="40dp"/>
 
+    <ImageView
+        android:id="@+id/imageInActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/noPic_locationBox"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="19dp"
+        app:srcCompat="@android:drawable/btn_star" />
 
 
 </RelativeLayout>
