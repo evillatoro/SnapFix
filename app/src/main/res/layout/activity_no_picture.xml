@@ -6,36 +6,55 @@
     android:layout_height="match_parent"
     tools:context="edwinvillatoro.snapfix.NoPictureActivity">
     <include
+        android:id="@+id/activity_no_picture_toolbar_include"
         layout="@layout/app_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
-
-    <EditText
-        android:id="@+id/noPic_descriptionBox"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
+    <ImageView
+        android:id="@+id/imageInActivity"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/activity_no_picture_toolbar_include"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/noPic_cancelButton"
-        android:layout_marginBottom="60dp"
-        android:background="@android:color/background_light"/>
+        app:srcCompat="@android:drawable/btn_star" />
 
     <Spinner
         android:id="@+id/noPic_problemTypeBox"
+        android:layout_marginTop="40dp"
+        android:layout_below="@id/imageInActivity"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true" />
+
 
     <TextView
         android:id="@+id/noPic_locationBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/noPic_problemTypeBox"
-        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:background="@android:color/background_light"/>
+
+    <EditText
+        android:id="@+id/noPic_descriptionBox"
+        android:hint="Describe the problem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:ems="10"
+        android:maxLines="7"
+        android:gravity="top|left"
+        android:inputType="textMultiLine|text"
+        android:layout_below="@+id/noPic_locationBox"
+        android:layout_alignLeft="@+id/noPic_locationBox"
+        android:layout_alignStart="@+id/noPic_locationBox"
+        android:layout_alignRight="@+id/noPic_locationBox"
+        android:layout_alignEnd="@+id/noPic_locationBox"
+        style="@style/Widget.AppCompat.EditText"/>
+
 
     <Button
         android:id="@+id/noPic_submitButton"
@@ -58,15 +77,5 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="40dp"/>
-
-    <ImageView
-        android:id="@+id/imageInActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/noPic_locationBox"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="19dp"
-        app:srcCompat="@android:drawable/btn_star" />
-
 
 </RelativeLayout>
