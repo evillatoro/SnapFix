@@ -33,6 +33,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import edwinvillatoro.snapfix.objects.NoPictureProblemEnum;
 import edwinvillatoro.snapfix.objects.Report;
 
 public class NoPictureActivity extends AppCompatActivity {
@@ -98,10 +99,8 @@ public class NoPictureActivity extends AppCompatActivity {
         }
 
         // fills spinner with values
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.problem_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        typeSpinner.setAdapter(adapter);
+        typeSpinner.setAdapter(new ArrayAdapter<NoPictureProblemEnum>(this,
+                android.R.layout.simple_spinner_item, NoPictureProblemEnum.values()));
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
