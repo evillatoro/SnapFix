@@ -32,7 +32,14 @@
             android:layout_height="match_parent"
             android:layout_below="@id/topToolBar">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/report_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/button_panel"></android.support.v7.widget.RecyclerView>
+
             <LinearLayout
+                android:id="@+id/button_panel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

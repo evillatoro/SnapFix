@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int PICK_IMAGE_REQUEST = 2;
     private Uri filePath;
     private Button mBtnChooseFromGallery, mBtnCamera, mBtnNoPicture;
+    private ListView reportList;
 
 
     @Override
@@ -40,6 +42,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mBtnCamera = (Button) findViewById(R.id.btnCamera);
         mBtnChooseFromGallery = (Button) findViewById(R.id.btnChoose);
         mBtnNoPicture = (Button) findViewById(R.id.btnNoPicture);
+
+        reportList = (ListView) findViewById(R.id.report_list);
+
+        // TODO: display list od current user's reports
+
 
         // set custom toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolBar);

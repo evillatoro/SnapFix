@@ -1,6 +1,8 @@
 package edwinvillatoro.snapfix.objects;
 
 
+import java.util.List;
+
 public class Report {
 
     private String id;
@@ -39,5 +41,12 @@ public class Report {
 
     public String getDescription() {
         return description;
+    }
+
+
+    // TODO: get list of all reports with the same userID
+
+    public List<Report> getUserReport(String uid) {
+        return null;
     }
 }
