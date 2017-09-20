@@ -37,7 +37,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 launchRegisterIntent();
-                finish();
+                //finish();
             }
         });
 
