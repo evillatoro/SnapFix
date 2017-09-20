@@ -14,12 +14,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int PICK_IMAGE_REQUEST = 2;
     private Uri filePath;
     private Button mBtnChooseFromGallery, mBtnCamera, mBtnNoPicture;
-    private ListView reportList;
+    private RecyclerView reportList;
 
 
     @Override
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mBtnChooseFromGallery = (Button) findViewById(R.id.btnChoose);
         mBtnNoPicture = (Button) findViewById(R.id.btnNoPicture);
 
-        reportList = (ListView) findViewById(R.id.report_list);
+        reportList = (RecyclerView) findViewById(R.id.report_list);
 
         // TODO: display list od current user's reports
 
