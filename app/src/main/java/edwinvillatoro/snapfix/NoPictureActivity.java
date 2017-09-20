@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -48,6 +50,7 @@ public class NoPictureActivity extends AppCompatActivity {
     private DatabaseReference reports_ref;
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mStorageReference;
+    private FirebaseUser currentUser;
 
     private Double latitude, longitude;
     private ImageView imageView;
@@ -78,6 +81,8 @@ public class NoPictureActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         reports_ref = database.getReference("reports");
+
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         mImageBitmap = null;
         Bundle bundle = getIntent().getExtras();
@@ -129,13 +134,14 @@ public class NoPictureActivity extends AppCompatActivity {
             String id = Long.toString(date.getTime());
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
             String timestamp = sdf.format(date);
+            String uid = currentUser.getUid();
 
             NumberFormat nf = NumberFormat.getInstance();
             nf.setMaximumFractionDigits(4);
             String location = nf.format(latitude) + "," + nf.format(longitude);
 
             //String id = reports_ref.push().getKey();
-            Report report = new Report(id, timestamp, type, location, description);
+            Report report = new Report(id, uid, timestamp, type, location, description);
             reports_ref.child(id).setValue(report);
             uploadPictureToDatabase(id);
         } else {
