@@ -11,6 +11,7 @@ public class Report {
     private String problem_type;
     private String location;
     private String description;
+    private String assigned_to;
 
     public Report(String id, String userID, String timestamp, String problem_type, String location, String description) {
         this.id = id;
@@ -42,6 +43,8 @@ public class Report {
     public String getDescription() {
         return description;
     }
+
+    public String getAssigned() { return assigned_to; }
 
 
     // TODO: get list of all reports with the same userID
