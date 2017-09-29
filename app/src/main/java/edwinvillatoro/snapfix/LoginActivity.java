@@ -16,6 +16,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -23,6 +29,10 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton, resetButton, registerButton;
     private FirebaseAuth auth;
 
+    private FirebaseDatabase database;
+    DatabaseReference root = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference users = root.child("users");
+    private FirebaseUser currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +94,26 @@ public class LoginActivity extends AppCompatActivity {
                         if(!task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
                         } else {
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            //look up user type
+                            currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                            final String id = currentUser.getUid();
+                            users.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.child(id).child("type").getValue().equals("worker")) {
+                                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                                        String type = null;
+                                        i.putExtra("worker", type);
+                                    } else {
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                             finish();
                         }
                     }
