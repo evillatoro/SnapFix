@@ -2,11 +2,12 @@ package edwinvillatoro.snapfix;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
-
+    private static final String TAG = "LoginActivity";
     private EditText emailText, passwordText;
     private Button loginButton, resetButton, registerButton;
     private FirebaseAuth auth;
@@ -100,12 +101,16 @@ public class LoginActivity extends AppCompatActivity {
                             users.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.child(id).child("type").getValue().equals("worker")) {
-                                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                                        String type = null;
-                                        i.putExtra("worker", type);
+                                    String accountType = (String)dataSnapshot.child(id).child("type").getValue();
+                                    Intent goToMainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                    if (accountType == null) {
+                                        goToMainActivityIntent.putExtra("TYPE", "user");
+                                        startActivity(goToMainActivityIntent);
                                     } else {
-                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                        // else the account is a worker or manager
+                                        Log.d(TAG, "account is a " + accountType);
+                                        goToMainActivityIntent.putExtra("TYPE", accountType);
+                                        startActivity(goToMainActivityIntent);
                                     }
                                 }
 
