@@ -15,15 +15,32 @@
 
         <!-- top toolbar-->
         <RelativeLayout
-            android:id="@+id/topToolBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include
-                layout="@layout/app_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+        android:id="@+id/topToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+
+        <include
+        layout="@layout/app_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+            <LinearLayout
+            android:id="@+id/refresh_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:paddingLeft="240dp">
+                <Button
+                android:id="@+id/btnRefresh"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Refresh" />
+
+            </LinearLayout>
         </RelativeLayout>
 
         <!-- middle section-->

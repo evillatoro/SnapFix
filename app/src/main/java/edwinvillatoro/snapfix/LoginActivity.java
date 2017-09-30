@@ -105,11 +105,13 @@ public class LoginActivity extends AppCompatActivity {
                                     Intent goToMainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
                                     if (accountType == null) {
                                         goToMainActivityIntent.putExtra("TYPE", "user");
+                                        goToMainActivityIntent.putExtra("userID", id);
                                         startActivity(goToMainActivityIntent);
                                     } else {
                                         // else the account is a worker or manager
                                         Log.d(TAG, "account is a " + accountType);
                                         goToMainActivityIntent.putExtra("TYPE", accountType);
+                                        goToMainActivityIntent.putExtra("userID", id);
                                         startActivity(goToMainActivityIntent);
                                     }
                                 }

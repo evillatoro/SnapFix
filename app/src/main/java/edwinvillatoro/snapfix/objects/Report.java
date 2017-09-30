@@ -46,10 +46,7 @@ public class Report {
 
     public String getAssigned() { return assigned_to; }
 
-
-    // TODO: get list of all reports with the same userID
-
-    public List<Report> getUserReport(String uid) {
-        return null;
+    public void setAssigned(String assigned) {
+        this.assigned_to = assigned;
     }
 }
