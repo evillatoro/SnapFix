@@ -135,13 +135,14 @@ public class NoPictureActivity extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
             String timestamp = sdf.format(date);
             String uid = currentUser.getUid();
+            String assigned_to = "";
 
             NumberFormat nf = NumberFormat.getInstance();
             nf.setMaximumFractionDigits(4);
             String location = nf.format(latitude) + "," + nf.format(longitude);
 
             //String id = reports_ref.push().getKey();
-            Report report = new Report(id, uid, timestamp, type, location, description);
+            Report report = new Report(id, uid, timestamp, type, location, description, assigned_to);
             reports_ref.child(id).setValue(report);
             uploadPictureToDatabase(id);
         } else {

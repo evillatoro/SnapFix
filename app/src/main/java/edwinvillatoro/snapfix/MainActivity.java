@@ -60,10 +60,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mBtnChooseFromGallery = (Button) findViewById(R.id.btnChoose);
         mBtnNoPicture = (Button) findViewById(R.id.btnNoPicture);
 
+        mBtnRefresh.setVisibility(View.GONE);
+
         // get intent and the type and userID
         Intent intent = getIntent();
         userType = intent.getStringExtra("TYPE");
         uid = intent.getStringExtra("userID");
+
+        if (!userType.equals("user")) {
+            mBtnCamera.setVisibility(View.GONE);
+            mBtnNoPicture.setVisibility(View.GONE);
+            mBtnChooseFromGallery.setVisibility(View.GONE);
+        }
 
         reportList = (RecyclerView) findViewById(R.id.report_list);
         db = FirebaseDatabase.getInstance();
@@ -188,7 +196,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String problem_type = (String) singleReport.get("problem_type");
             String location = (String) singleReport.get("location");
             String description = (String) singleReport.get("description");
-            reportArray.add(new Report(id, userID, timestamp, problem_type, location, description));
+            String assigned_to = (String) singleReport.get("assigned_to");
+            reportArray.add(new Report(id, userID, timestamp, problem_type, location, description,assigned_to));
         }
         reports = reportArray;
     }
@@ -228,8 +237,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 assigned_to = (String) entry.getValue();
             }
         }
-        Report report = new Report(id, userID, timestamp, problem_type, location, description);
-        report.setAssigned(assigned_to);
+        Report report = new Report(id, userID, timestamp, problem_type, location, description, assigned_to);
         if (userType.equals("worker")) {
             if (assigned_to.equals(uid)) {
                 reports.add(report);
