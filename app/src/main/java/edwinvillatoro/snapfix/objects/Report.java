@@ -45,7 +45,6 @@ public class Report {
 
     public String getAssigned_to() { return assigned_to; }
 
-    public void setAssigned_to(String assigned) {
-        this.assigned_to = assigned;
-    }
+    public void setAssigned_to(String assigned) { assigned_to = assigned; }
+
 }

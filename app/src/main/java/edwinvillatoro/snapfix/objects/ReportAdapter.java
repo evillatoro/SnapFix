@@ -19,14 +19,13 @@ import edwinvillatoro.snapfix.R;
 public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder> {
 
     // provide a direct reference to each of the views
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         // holder containing variables for display
         public TextView description;
         public TextView timeStamp;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             description = (TextView) itemView.findViewById(R.id.report_description);
             timeStamp = (TextView) itemView.findViewById(R.id.time_stamp);
         }
@@ -52,10 +51,8 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     public ReportAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         // inflate the custom layout
         View reportView = inflater.inflate(R.layout.item_report, parent, false);
-
         // return a new holder instance
         ViewHolder viewHolder = new ViewHolder(reportView);
         return viewHolder;
@@ -66,7 +63,6 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     public void onBindViewHolder(ReportAdapter.ViewHolder viewHolder, int position) {
         // Get the report model from position
         Report report = this.reports.get(position);
-
         // Set report views based on description and timestamp
         TextView des = viewHolder.description;
         des.setText(report.getDescription());
@@ -79,4 +75,5 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     public int getItemCount() {
         return reports.size();
     }
+
 }

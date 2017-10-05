@@ -31,87 +31,87 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import edwinvillatoro.snapfix.objects.Report;
 import edwinvillatoro.snapfix.objects.ReportAdapter;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private static final String TAG = "MainActivity";
+public class MainActivity
+        extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FirebaseDatabase db;
-    private Toolbar mToolbar;
+    private static final String TAG = "MainActivity";
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PICK_IMAGE_REQUEST = 2;
-    private Uri filePath;
+    private DatabaseReference mDatabase;
+    private Toolbar mToolbar;
     private Button mBtnRefresh, mBtnChooseFromGallery, mBtnCamera, mBtnNoPicture;
-    private RecyclerView reportList;
-    private ArrayList<Report> reports = new ArrayList<>();
-    private ReportAdapter adapter;
-    String userType, uid;
+    private RecyclerView mReportsView;
+    private List<Report> mReportsList = new ArrayList<>();
+    private ReportAdapter mReportAdapter;
+    private String mUserType, mUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // initialize all UI view objects
         mBtnRefresh = (Button) findViewById(R.id.btnRefresh);
         mBtnCamera = (Button) findViewById(R.id.btnCamera);
         mBtnChooseFromGallery = (Button) findViewById(R.id.btnChoose);
         mBtnNoPicture = (Button) findViewById(R.id.btnNoPicture);
+        mReportsView = (RecyclerView) findViewById(R.id.report_list);
 
+        // ????
         mBtnRefresh.setVisibility(View.GONE);
 
-        // get intent and the type and userID
+        // get intent and the user type and ID from LoginActivity
         Intent intent = getIntent();
-        userType = intent.getStringExtra("TYPE");
-        uid = intent.getStringExtra("userID");
+        mUserType = intent.getStringExtra("TYPE");
+        mUserID = intent.getStringExtra("userID");
 
-        if (!userType.equals("user")) {
-            mBtnCamera.setVisibility(View.GONE);
-            mBtnNoPicture.setVisibility(View.GONE);
-            mBtnChooseFromGallery.setVisibility(View.GONE);
-        }
 
-        reportList = (RecyclerView) findViewById(R.id.report_list);
-        db = FirebaseDatabase.getInstance();
-        DatabaseReference ref = db.getReference().child("reports");
+        // initialize reference to Firebase database, specifically pointing at reports
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("reports");
+        mDatabase.addChildEventListener(
+                new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        // Check dataSnapshot of database and pass in children, then force load view
+                        convertDbReportsOnChild((Map<String, Object>) dataSnapshot.getValue(), mUserType);
+                        mReportAdapter.notifyDataSetChanged();
+                    }
 
-        ref.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                // Check dataSnapshot of database and pass in children, then force load view
-                convertDbReportsOnChild((Map<String, Object>) dataSnapshot.getValue(), userType);
-                adapter.notifyDataSetChanged();
-            }
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        // TODO checks report changes from dataSnapshot
+                    }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                // TODO checks report changes from dataSnapshot
-            }
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        // TODO checks report deletion from dataSnapshot
+                    }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                // TODO checks report deletion from dataSnapshot
-            }
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d("Database Error", "Cancelled");
+                    }
+                });
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("Database Error", "Cancelled");
-            }
-        });
-        ref.addValueEventListener(
+        mDatabase.addValueEventListener(
                 // for full database map vs child
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // get map of users in dataSnapshot
                         convertDbReports((Map<String,Object>) dataSnapshot.getValue());
-                        System.out.println("We're done loading the initial "+dataSnapshot.getChildrenCount()+" items");
+                        System.out.println("We're done loading the initial " +
+                                dataSnapshot.getChildrenCount() + " items");
                     }
 
                     @Override
@@ -119,12 +119,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Log.d("Database Error", "Listener error prompt");
                     }
                 });
-        adapter = new ReportAdapter(this, reports);
-        reportList.setAdapter(adapter);
-        reportList.setLayoutManager(new LinearLayoutManager(this));
+
+        // populates the report recycleview with values
+        mReportAdapter = new ReportAdapter(this, mReportsList);
+        mReportsView.setAdapter(mReportAdapter);
+        mReportsView.setLayoutManager(new LinearLayoutManager(this));
+
         // set custom toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(mToolbar);
+
+        // only regular users can see the buttons to submit reports
+        if (!mUserType.equals("user")) {
+            mBtnCamera.setVisibility(View.GONE);
+            mBtnNoPicture.setVisibility(View.GONE);
+            mBtnChooseFromGallery.setVisibility(View.GONE);
+        }
 
         mBtnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,10 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mBtnNoPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NoPictureActivity.class);
-                startActivity(intent);
-                //FirebaseAuth.getInstance().signOut();
-                //startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                startActivity(new Intent(MainActivity.this, NoPictureActivity.class));
             }
         });
 
@@ -154,14 +161,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mBtnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter.notifyDataSetChanged();
+                mReportAdapter.notifyDataSetChanged();
 
             }});
 
         // nav drawer functionality
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
         final ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
-                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+                this, drawer, mToolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 //hideKeyBoard();
@@ -178,15 +186,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //TODO: check permissions for going into gallery
         checkPermissions();
 
-        ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 123);
 
     }
 
     private void convertDbReports(Map<String,Object> reportArr) {
 
-        ArrayList<Report> reportArray = new ArrayList<>();
+        List<Report> reportArray = new ArrayList<>();
 
-        // iterate through each report, converting it into reports going into array list
+        // iterate through each report, converting it to go into the list of reports
         for (Map.Entry<String, Object> entry : reportArr.entrySet()){
             //Get report map
             Map singleReport = (Map) entry.getValue();
@@ -197,12 +206,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String location = (String) singleReport.get("location");
             String description = (String) singleReport.get("description");
             String assigned_to = (String) singleReport.get("assigned_to");
-            reportArray.add(new Report(id, userID, timestamp, problem_type, location, description,assigned_to));
+            reportArray.add(new Report(id, userID, timestamp, problem_type, location,
+                    description, assigned_to));
         }
-        reports = reportArray;
+        mReportsList = reportArray;
     }
 
-    private void convertDbReportsOnChild(Map<String,Object> reportArr, String userType) {
+    private void convertDbReportsOnChild(Map<String,Object> reportArr, String mUserType) {
         // iterate through a report, loading in values into report object
         String id = "";
         String userID = "";
@@ -213,8 +223,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String assigned_to = "";
 
         for (Map.Entry<String, Object> entry : reportArr.entrySet()) {
-
-            //Get report map
             if (entry.getKey().equals("id")) {
                 id = entry.getValue().toString();
             }
@@ -237,17 +245,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 assigned_to = (String) entry.getValue();
             }
         }
-        Report report = new Report(id, userID, timestamp, problem_type, location, description, assigned_to);
-        if (userType.equals("worker")) {
-            if (assigned_to.equals(uid)) {
-                reports.add(report);
+
+        // workers can only see reports assigned to them
+        // regular users can only see reports they submitted
+        // managers can see all reports
+        Report report = new Report(id, userID, timestamp, problem_type, location,
+                description, assigned_to);
+        if (mUserType.equals("worker")) {
+            if (assigned_to.equals(mUserID)) {
+                mReportsList.add(report);
             }
-        } else if (userType.equals("user")) {
-            if (userID.equals(uid)) {
-                reports.add(report);
+        } else if (mUserType.equals("user")) {
+            if (userID.equals(mUserID)) {
+                mReportsList.add(report);
             }
         } else {
-            reports.add(report);
+            mReportsList.add(report);
         }
     }
 
@@ -259,33 +272,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void launchCameraIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Intent intent = new Intent(MainActivity.this, NoPictureActivity.class);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             // get the camera image
             Bundle extras = data.getExtras();
-
-            Intent s = new Intent(MainActivity.this, NoPictureActivity.class);
-            s.putExtra("camera", true);
-            s.putExtra("imageBitmap", (Bitmap) extras.get("data"));
-            startActivity(s);
-        } else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filePath = data.getData();
-            Intent s = new Intent(MainActivity.this, NoPictureActivity.class);
-            s.putExtra("gallery", true);
-            s.putExtra("filePath", data.getData());
-            startActivity(s);
+            intent.putExtra("camera", true);
+            intent.putExtra("imageBitmap", (Bitmap) extras.get("data"));
+            startActivity(intent);
+        } else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
+                && data.getData() != null) {
+            Uri filePath = data.getData();
+            intent.putExtra("gallery", true);
+            intent.putExtra("filePath", filePath);
+            startActivity(intent);
         }
     }
 
+    // TODO
     private void checkPermissions() {
 
     }

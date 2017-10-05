@@ -113,6 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                                         goToMainActivityIntent.putExtra("TYPE", accountType);
                                         goToMainActivityIntent.putExtra("userID", id);
                                         startActivity(goToMainActivityIntent);
+                                        finish();
                                     }
                                 }
 
