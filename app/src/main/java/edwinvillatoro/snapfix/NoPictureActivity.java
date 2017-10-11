@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -45,18 +44,16 @@ public class NoPictureActivity extends AppCompatActivity {
     private TextView locationView;
     private EditText descriptionBox;
     private Button submitButton, cancelButton;
-    private Toolbar noPicToolbar;
 
-    private FirebaseDatabase database;
-    private DatabaseReference reports_ref;
-    private FirebaseStorage mFirebaseStorage;
-    private StorageReference mStorageReference;
-    private FirebaseUser currentUser;
+    private DatabaseReference mDatabase;
+    private StorageReference mStorage;
+    private FirebaseUser mCurrentUser;
 
     private Double latitude, longitude;
     private ImageView imageView;
     private ProgressDialog mProgressDialog;
     private Bitmap mImageBitmap;
+    private String type, uid;
 
 
     @Override
@@ -69,25 +66,24 @@ public class NoPictureActivity extends AppCompatActivity {
         descriptionBox = (EditText) findViewById(R.id.noPic_descriptionBox);
         submitButton = (Button) findViewById(R.id.noPic_submitButton);
         cancelButton = (Button) findViewById(R.id.noPic_cancelButton);
-        noPicToolbar = (Toolbar) findViewById(R.id.toolBar);
         imageView = (ImageView) findViewById(R.id.imageInActivity);
 
-        setSupportActionBar(noPicToolbar);
 
         mProgressDialog = new ProgressDialog(this);
 
         // initialize Firebase
-        mFirebaseStorage = FirebaseStorage.getInstance();
-        mStorageReference = mFirebaseStorage.getReference();
 
-        database = FirebaseDatabase.getInstance();
-        reports_ref = database.getReference("reports");
+        mStorage = FirebaseStorage.getInstance().getReference();
 
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference("reports");
+
+        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         mImageBitmap = null;
         Bundle bundle = getIntent().getExtras();
-        if (bundle!= null) {
+        type = bundle.getString("userType");
+        uid = bundle.getString("userID");
+        if (bundle.getBoolean("picture", true)) {
             if (bundle.getBoolean("camera")) {
                 mImageBitmap = getIntent().getExtras().getParcelable("imageBitmap");
                 imageView.setImageBitmap(mImageBitmap);
@@ -118,6 +114,10 @@ public class NoPictureActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(NoPictureActivity.this, MainActivity.class);
+                intent.putExtra("userType", type);
+                intent.putExtra("userID", uid);
+                startActivity(intent);
                 finish();
             }
         });
@@ -135,16 +135,16 @@ public class NoPictureActivity extends AppCompatActivity {
             String id = Long.toString(date.getTime());
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
             String timestamp = sdf.format(date);
-            String uid = currentUser.getUid();
+            String uid = mCurrentUser.getUid();
             String assigned_to = "";
 
             NumberFormat nf = NumberFormat.getInstance();
             nf.setMaximumFractionDigits(4);
             String location = nf.format(latitude) + "," + nf.format(longitude);
 
-            //String id = reports_ref.push().getKey();
+            //String id = mDatabase.push().getKey();
             Report report = new Report(id, uid, timestamp, type, location, description, assigned_to);
-            reports_ref.child(id).setValue(report);
+            mDatabase.child(id).setValue(report);
             uploadPictureToDatabase(id);
         } else {
             Toast.makeText(this, "The description cannot be left blank", Toast.LENGTH_SHORT).show();
@@ -178,7 +178,7 @@ public class NoPictureActivity extends AppCompatActivity {
             byte[] dataBAOS = baos.toByteArray();
 
             /*************** UPLOADS THE PIC TO FIREBASE***************/
-            StorageReference storageRef = mStorageReference.child("images");
+            StorageReference storageRef = mStorage.child("images");
 
             //name of the image file (added time to have different files to avoid rewrite on the same file)
             StorageReference imagesRef = storageRef.child("filename_" + id);
@@ -199,6 +199,10 @@ public class NoPictureActivity extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(), "Uploading successful", Toast.LENGTH_SHORT).show();
                     Toast.makeText(getApplicationContext(), "Your request has been submitted", Toast.LENGTH_SHORT).show();
                     mProgressDialog.dismiss();
+                    Intent intent = new Intent(NoPictureActivity.this, MainActivity.class);
+                    intent.putExtra("userType", type);
+                    intent.putExtra("userID", uid);
+                    startActivity(intent);
                     finish();
                 }
             });
@@ -207,7 +211,16 @@ public class NoPictureActivity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), "Null", Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "Your request has been submitted", Toast.LENGTH_SHORT).show();
             mProgressDialog.dismiss();
+            Intent intent = new Intent(NoPictureActivity.this, MainActivity.class);
+            intent.putExtra("userType", type);
+            intent.putExtra("userID", uid);
+            startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }

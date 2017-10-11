@@ -68,7 +68,7 @@ public class MainActivity
 
         // get intent and the user type and ID from LoginActivity
         Intent intent = getIntent();
-        mUserType = intent.getStringExtra("TYPE");
+        mUserType = intent.getStringExtra("userType");
         mUserID = intent.getStringExtra("userID");
 
 
@@ -153,7 +153,12 @@ public class MainActivity
         mBtnNoPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, NoPictureActivity.class));
+                Intent intent = new Intent(MainActivity.this, NoPictureActivity.class);
+                intent.putExtra("userType", mUserType);
+                intent.putExtra("userID", mUserID);
+                intent.putExtra("picture", false);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -282,18 +287,22 @@ public class MainActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Intent intent = new Intent(MainActivity.this, NoPictureActivity.class);
+        intent.putExtra("userType", mUserType);
+        intent.putExtra("userID", mUserID);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             // get the camera image
             Bundle extras = data.getExtras();
             intent.putExtra("camera", true);
             intent.putExtra("imageBitmap", (Bitmap) extras.get("data"));
             startActivity(intent);
+            finish();
         } else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
                 && data.getData() != null) {
             Uri filePath = data.getData();
             intent.putExtra("gallery", true);
             intent.putExtra("filePath", filePath);
             startActivity(intent);
+            finish();
         }
     }
 

@@ -104,13 +104,13 @@ public class LoginActivity extends AppCompatActivity {
                                     String accountType = (String)dataSnapshot.child(id).child("type").getValue();
                                     Intent goToMainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
                                     if (accountType == null) {
-                                        goToMainActivityIntent.putExtra("TYPE", "user");
+                                        goToMainActivityIntent.putExtra("userType", "user");
                                         goToMainActivityIntent.putExtra("userID", id);
                                         startActivity(goToMainActivityIntent);
                                     } else {
                                         // else the account is a worker or manager
                                         Log.d(TAG, "account is a " + accountType);
-                                        goToMainActivityIntent.putExtra("TYPE", accountType);
+                                        goToMainActivityIntent.putExtra("userType", accountType);
                                         goToMainActivityIntent.putExtra("userID", id);
                                         startActivity(goToMainActivityIntent);
                                         finish();
