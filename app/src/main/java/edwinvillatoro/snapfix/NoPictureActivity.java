@@ -53,7 +53,7 @@ public class NoPictureActivity extends AppCompatActivity {
     private ImageView imageView;
     private ProgressDialog mProgressDialog;
     private Bitmap mImageBitmap;
-    private String type, uid;
+    //private String type, uid;
 
 
     @Override
@@ -81,9 +81,10 @@ public class NoPictureActivity extends AppCompatActivity {
 
         mImageBitmap = null;
         Bundle bundle = getIntent().getExtras();
-        type = bundle.getString("userType");
-        uid = bundle.getString("userID");
-        if (bundle.getBoolean("picture", true)) {
+        //type = bundle.getString("userType");
+        //uid = bundle.getString("userID");
+        //bundle.getBoolean("picture", true)
+        if (bundle != null) {
             if (bundle.getBoolean("camera")) {
                 mImageBitmap = getIntent().getExtras().getParcelable("imageBitmap");
                 imageView.setImageBitmap(mImageBitmap);
@@ -114,10 +115,10 @@ public class NoPictureActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NoPictureActivity.this, MainActivity.class);
-                intent.putExtra("userType", type);
-                intent.putExtra("userID", uid);
-                startActivity(intent);
+                //Intent intent = new Intent(NoPictureActivity.this, MainActivity.class);
+                //intent.putExtra("userType", type);
+                //intent.putExtra("userID", uid);
+                //startActivity(intent);
                 finish();
             }
         });
@@ -199,10 +200,10 @@ public class NoPictureActivity extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(), "Uploading successful", Toast.LENGTH_SHORT).show();
                     Toast.makeText(getApplicationContext(), "Your request has been submitted", Toast.LENGTH_SHORT).show();
                     mProgressDialog.dismiss();
-                    Intent intent = new Intent(NoPictureActivity.this, MainActivity.class);
-                    intent.putExtra("userType", type);
-                    intent.putExtra("userID", uid);
-                    startActivity(intent);
+                    //Intent intent = new Intent(NoPictureActivity.this, MainActivity.class);
+                    //intent.putExtra("userType", type);
+                    //intent.putExtra("userID", uid);
+                    //startActivity(intent);
                     finish();
                 }
             });
@@ -211,10 +212,10 @@ public class NoPictureActivity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), "Null", Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "Your request has been submitted", Toast.LENGTH_SHORT).show();
             mProgressDialog.dismiss();
-            Intent intent = new Intent(NoPictureActivity.this, MainActivity.class);
-            intent.putExtra("userType", type);
-            intent.putExtra("userID", uid);
-            startActivity(intent);
+            //Intent intent = new Intent(NoPictureActivity.this, MainActivity.class);
+            //intent.putExtra("userType", type);
+            //intent.putExtra("userID", uid);
+            //startActivity(intent);
             finish();
         }
     }

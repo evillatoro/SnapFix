@@ -76,4 +76,10 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         return reports.size();
     }
 
+    /*public void updateData(List<Report> data) {
+        reports.clear();
+        reports = data;
+        this.notifyDataSetChanged();
+    }*/
+
 }

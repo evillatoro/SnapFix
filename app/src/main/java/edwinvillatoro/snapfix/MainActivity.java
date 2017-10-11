@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -79,6 +80,7 @@ public class MainActivity
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         // Check dataSnapshot of database and pass in children, then force load view
+
                         convertDbReportsOnChild((Map<String, Object>) dataSnapshot.getValue(), mUserType);
                         mReportAdapter.notifyDataSetChanged();
                     }
@@ -103,7 +105,7 @@ public class MainActivity
                     }
                 });
 
-        mDatabase.addValueEventListener(
+        /*mDatabase.addValueEventListener(
                 // for full database map vs child
                 new ValueEventListener() {
                     @Override
@@ -118,12 +120,13 @@ public class MainActivity
                     public void onCancelled(DatabaseError databaseError) {
                         Log.d("Database Error", "Listener error prompt");
                     }
-                });
+                });*/
 
         // populates the report recycleview with values
         mReportAdapter = new ReportAdapter(this, mReportsList);
         mReportsView.setAdapter(mReportAdapter);
         mReportsView.setLayoutManager(new LinearLayoutManager(this));
+
 
         // set custom toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolBar);
@@ -154,11 +157,11 @@ public class MainActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, NoPictureActivity.class);
-                intent.putExtra("userType", mUserType);
-                intent.putExtra("userID", mUserID);
-                intent.putExtra("picture", false);
+                //intent.putExtra("userType", mUserType);
+                //intent.putExtra("userID", mUserID);
+                //intent.putExtra("picture", false);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
 
@@ -196,6 +199,12 @@ public class MainActivity
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //mReportAdapter.updateData(mReportsList);
+    }
+
     private void convertDbReports(Map<String,Object> reportArr) {
 
         List<Report> reportArray = new ArrayList<>();
@@ -219,6 +228,8 @@ public class MainActivity
 
     private void convertDbReportsOnChild(Map<String,Object> reportArr, String mUserType) {
         // iterate through a report, loading in values into report object
+
+
         String id = "";
         String userID = "";
         String timestamp = "";
@@ -228,6 +239,7 @@ public class MainActivity
         String assigned_to = "";
 
         for (Map.Entry<String, Object> entry : reportArr.entrySet()) {
+            System.out.println(entry);
             if (entry.getKey().equals("id")) {
                 id = entry.getValue().toString();
             }
@@ -267,6 +279,8 @@ public class MainActivity
         } else {
             mReportsList.add(report);
         }
+
+
     }
 
     private void launchGalleryIntent() {
@@ -287,22 +301,20 @@ public class MainActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Intent intent = new Intent(MainActivity.this, NoPictureActivity.class);
-        intent.putExtra("userType", mUserType);
-        intent.putExtra("userID", mUserID);
+        //intent.putExtra("userType", mUserType);
+        //intent.putExtra("userID", mUserID);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             // get the camera image
             Bundle extras = data.getExtras();
             intent.putExtra("camera", true);
             intent.putExtra("imageBitmap", (Bitmap) extras.get("data"));
             startActivity(intent);
-            finish();
         } else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
                 && data.getData() != null) {
             Uri filePath = data.getData();
             intent.putExtra("gallery", true);
             intent.putExtra("filePath", filePath);
             startActivity(intent);
-            finish();
         }
     }
 

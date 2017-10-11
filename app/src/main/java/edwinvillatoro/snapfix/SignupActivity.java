@@ -72,7 +72,7 @@ public class SignupActivity extends AppCompatActivity {
                             Toast.makeText(SignupActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent goToMainActivityIntent = new Intent(SignupActivity.this, MainActivity.class);
-                            goToMainActivityIntent.putExtra("TYPE", "user");
+                            goToMainActivityIntent.putExtra("userType", "user");
                             goToMainActivityIntent.putExtra("userID", auth.getCurrentUser().getUid());
                             startActivity(goToMainActivityIntent);
                             finish();
