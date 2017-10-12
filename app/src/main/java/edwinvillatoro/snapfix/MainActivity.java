@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,9 +45,10 @@ public class MainActivity
     private static final String TAG = "MainActivity";
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PICK_IMAGE_REQUEST = 2;
+
     private DatabaseReference mDatabase;
     private Toolbar mToolbar;
-    private Button mBtnRefresh, mBtnChooseFromGallery, mBtnCamera, mBtnNoPicture;
+    private LinearLayout mBtnChooseFromGallery, mBtnCamera, mBtnNoPicture;
     private RecyclerView mReportsView;
     private List<Report> mReportsList = new ArrayList<>();
     private ReportAdapter mReportAdapter;
@@ -58,75 +60,50 @@ public class MainActivity
         setContentView(R.layout.activity_main);
 
         // initialize all UI view objects
-        mBtnRefresh = (Button) findViewById(R.id.btnRefresh);
-        mBtnCamera = (Button) findViewById(R.id.btnCamera);
-        mBtnChooseFromGallery = (Button) findViewById(R.id.btnChoose);
-        mBtnNoPicture = (Button) findViewById(R.id.btnNoPicture);
+        mBtnCamera = (LinearLayout) findViewById(R.id.btnCamera);
+        mBtnChooseFromGallery = (LinearLayout) findViewById(R.id.btnChoose);
+        mBtnNoPicture = (LinearLayout) findViewById(R.id.btnNoPicture);
         mReportsView = (RecyclerView) findViewById(R.id.report_list);
-
-        // ????
-        mBtnRefresh.setVisibility(View.GONE);
 
         // get intent and the user type and ID from LoginActivity
         Intent intent = getIntent();
         mUserType = intent.getStringExtra("userType");
         mUserID = intent.getStringExtra("userID");
 
-
         // initialize reference to Firebase database, specifically pointing at reports
         mDatabase = FirebaseDatabase.getInstance().getReference().child("reports");
+
+        // add a ChildEventListener to retrieve a data from the database
         mDatabase.addChildEventListener(
                 new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        // Check dataSnapshot of database and pass in children, then force load view
-
-                        convertDbReportsOnChild((Map<String, Object>) dataSnapshot.getValue(), mUserType);
+                        updateReportListView((Map<String, Object>) dataSnapshot.getValue(), mUserType);
+                        // forces the RecycleView to refresh the view
                         mReportAdapter.notifyDataSetChanged();
                     }
-
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                         // TODO checks report changes from dataSnapshot
                     }
-
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
                         // TODO checks report deletion from dataSnapshot
                     }
-
                     @Override
                     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.d("Database Error", "Cancelled");
                     }
                 });
 
-        /*mDatabase.addValueEventListener(
-                // for full database map vs child
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // get map of users in dataSnapshot
-                        convertDbReports((Map<String,Object>) dataSnapshot.getValue());
-                        System.out.println("We're done loading the initial " +
-                                dataSnapshot.getChildrenCount() + " items");
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.d("Database Error", "Listener error prompt");
-                    }
-                });*/
 
         // populates the report recycleview with values
-        mReportAdapter = new ReportAdapter(this, mReportsList);
+        mReportAdapter = new ReportAdapter(getApplicationContext(), mReportsList);
         mReportsView.setAdapter(mReportAdapter);
         mReportsView.setLayoutManager(new LinearLayoutManager(this));
-
 
         // set custom toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolBar);
@@ -139,39 +116,25 @@ public class MainActivity
             mBtnChooseFromGallery.setVisibility(View.GONE);
         }
 
+        // button functionality
         mBtnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchCameraIntent();
             }
         });
-
         mBtnChooseFromGallery.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                launchGalleryIntent();
+            public void onClick(View view) {launchGalleryIntent();
             }
         });
-
         mBtnNoPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NoPictureActivity.class);
-                //intent.putExtra("userType", mUserType);
-                //intent.putExtra("userID", mUserID);
-                //intent.putExtra("picture", false);
-                startActivity(intent);
-                //finish();
+                startActivity(new Intent(MainActivity.this, NoPictureActivity.class));
             }
         });
 
-        // Force load view button
-        mBtnRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mReportAdapter.notifyDataSetChanged();
-
-            }});
 
         // nav drawer functionality
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
@@ -188,8 +151,8 @@ public class MainActivity
         drawer.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //navigationView.setNavigationItemSelectedListener(this);
 
         //TODO: check permissions for going into gallery
         checkPermissions();
@@ -199,37 +162,8 @@ public class MainActivity
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //mReportAdapter.updateData(mReportsList);
-    }
-
-    private void convertDbReports(Map<String,Object> reportArr) {
-
-        List<Report> reportArray = new ArrayList<>();
-
-        // iterate through each report, converting it to go into the list of reports
-        for (Map.Entry<String, Object> entry : reportArr.entrySet()){
-            //Get report map
-            Map singleReport = (Map) entry.getValue();
-            String id = singleReport.get("id").toString();
-            String userID = (String) singleReport.get("userID");
-            String timestamp = (String) singleReport.get("timestamp");
-            String problem_type = (String) singleReport.get("problem_type");
-            String location = (String) singleReport.get("location");
-            String description = (String) singleReport.get("description");
-            String assigned_to = (String) singleReport.get("assigned_to");
-            reportArray.add(new Report(id, userID, timestamp, problem_type, location,
-                    description, assigned_to));
-        }
-        mReportsList = reportArray;
-    }
-
-    private void convertDbReportsOnChild(Map<String,Object> reportArr, String mUserType) {
-        // iterate through a report, loading in values into report object
-
-
+    // retrieves the report data from the datasnapshot and populates the recycleview with reports
+    private void updateReportListView(Map<String,Object> reportArr, String mUserType) {
         String id = "";
         String userID = "";
         String timestamp = "";
@@ -266,20 +200,23 @@ public class MainActivity
         // workers can only see reports assigned to them
         // regular users can only see reports they submitted
         // managers can see all reports
-        Report report = new Report(id, userID, timestamp, problem_type, location,
-                description, assigned_to);
-        if (mUserType.equals("worker")) {
-            if (assigned_to.equals(mUserID)) {
+        Report report = new Report(id, userID, timestamp, problem_type,
+                location, description, assigned_to);
+        switch (mUserType) {
+            case "worker":
+                if (assigned_to.equals(mUserID)) {
+                    mReportsList.add(report);
+                }
+                break;
+            case "user":
+                if (userID.equals(mUserID)) {
+                    mReportsList.add(report);
+                }
+                break;
+            default:
                 mReportsList.add(report);
-            }
-        } else if (mUserType.equals("user")) {
-            if (userID.equals(mUserID)) {
-                mReportsList.add(report);
-            }
-        } else {
-            mReportsList.add(report);
+                break;
         }
-
 
     }
 
@@ -301,21 +238,18 @@ public class MainActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Intent intent = new Intent(MainActivity.this, NoPictureActivity.class);
-        //intent.putExtra("userType", mUserType);
-        //intent.putExtra("userID", mUserID);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             // get the camera image
             Bundle extras = data.getExtras();
             intent.putExtra("camera", true);
             intent.putExtra("imageBitmap", (Bitmap) extras.get("data"));
-            startActivity(intent);
         } else if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
                 && data.getData() != null) {
             Uri filePath = data.getData();
             intent.putExtra("gallery", true);
             intent.putExtra("filePath", filePath);
-            startActivity(intent);
         }
+        startActivity(intent);
     }
 
     // TODO

@@ -15,87 +15,122 @@
 
         <!-- top toolbar-->
         <RelativeLayout
-        android:id="@+id/topToolBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:id="@+id/topToolBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-
-        <include
-        layout="@layout/app_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-
-            <LinearLayout
-            android:id="@+id/refresh_panel"
+            <include
+            layout="@layout/app_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            android:paddingLeft="240dp">
-                <Button
-                android:id="@+id/btnRefresh"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Refresh" />
-
-            </LinearLayout>
+            />
         </RelativeLayout>
 
         <!-- middle section-->
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:weightSum="2"
             android:layout_below="@id/topToolBar">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/report_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="0dp"
+                android:layout_weight="2"/>
 
+            <!-- button pannel -->
             <LinearLayout
                 android:id="@+id/button_panel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:orientation="horizontal"
-                android:weightSum="3">
+                android:weightSum="3"
+                style="?android:buttonBarStyle">
 
-                <Button
+                <LinearLayout
                     android:id="@+id/btnChoose"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Gallery"
-                    android:layout_weight="1"/>
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:layout_weight="1"
+                    style="?android:buttonBarButtonStyle">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_collections_black_24dp"
+                        android:scaleType="fitXY"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="3dp"
+                        android:text="Gallery"
+                        android:fontFamily="sans-serif-condensed"/>
+                </LinearLayout>
 
-                <Button
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/light_gray"/>
+
+                <LinearLayout
                     android:id="@+id/btnCamera"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:clickable="true"
                     android:layout_weight="1"
-                    android:text="Camera" />
-                <Button
+                    style="?android:buttonBarButtonStyle">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_camera_alt_black_24dp"
+                        android:scaleType="fitXY"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="3dp"
+                        android:text="Camera"
+                        android:fontFamily="sans-serif-condensed"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/light_gray"/>
+
+                <LinearLayout
                     android:id="@+id/btnNoPicture"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:clickable="true"
                     android:layout_weight="1"
-                    android:text="No Picture" />
+                    style="?android:buttonBarButtonStyle">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_compare_black_24dp"
+                        android:scaleType="fitXY"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="3dp"
+                        android:text="No Picture"
+                        android:fontFamily="sans-serif-condensed"/>
+                </LinearLayout>
 
             </LinearLayout>
-        </RelativeLayout>
+
+        </LinearLayout>
 
     </RelativeLayout>
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_drawer_menu"
-        />
+
 </android.support.v4.widget.DrawerLayout>

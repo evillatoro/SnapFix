@@ -2,5 +2,8 @@
     <string name="app_name">SnapFix</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="gallery_btn">Gallery</string>
+    <string name="camera_btn">Camera</string>
+    <string name="no_picture_btn">No Picture</string>
 
 </resources>
