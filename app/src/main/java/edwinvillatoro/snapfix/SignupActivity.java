@@ -17,8 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText emailText, passwordText;
-    private Button registerButton, loginButton;
+    private EditText mEmailInput, mPasswordInput;
+    private Button mBtnRegister, mBtnLogin;
     private FirebaseAuth auth;
 
     @Override
@@ -26,40 +26,40 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        mEmailInput = (EditText) findViewById(R.id.email);
+        mPasswordInput = (EditText) findViewById(R.id.password);
+        mBtnRegister = (Button) findViewById(R.id.register_button);
+        mBtnLogin = (Button) findViewById(R.id.login_button);
+
         auth = FirebaseAuth.getInstance();
 
-        emailText = (EditText) findViewById(R.id.email);
-        passwordText = (EditText) findViewById(R.id.password);
-        registerButton = (Button) findViewById(R.id.register_button);
-        loginButton = (Button) findViewById(R.id.login_button);
-
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        mBtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchRegisterIntent();
-                //finish();
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
             }
         });
     }
 
 
     private void launchRegisterIntent() {
-        String email = emailText.getText().toString().trim();
-        String password = passwordText.getText().toString().trim();
+        String email = mEmailInput.getText().toString().trim();
+        String password = mPasswordInput.getText().toString().trim();
 
         if(TextUtils.isEmpty(email)) {
-            Toast.makeText(getApplicationContext(), "Email address is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.require_email, Toast.LENGTH_SHORT).show();
             return;
         }
         if(TextUtils.isEmpty(password)) {
-            Toast.makeText(getApplicationContext(), "Password is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.require_password, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -67,11 +67,12 @@ public class SignupActivity extends AppCompatActivity {
                 .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Toast.makeText(SignupActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
                         if(!task.isSuccessful()) {
-                            Toast.makeText(SignupActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignupActivity.this, R.string.login_fail,
+                                    Toast.LENGTH_SHORT).show();
                         } else {
-                            Intent goToMainActivityIntent = new Intent(SignupActivity.this, MainActivity.class);
+                            Intent goToMainActivityIntent = new Intent(SignupActivity.this,
+                                    MainActivity.class);
                             goToMainActivityIntent.putExtra("userType", "user");
                             goToMainActivityIntent.putExtra("userID", auth.getCurrentUser().getUid());
                             startActivity(goToMainActivityIntent);
