@@ -18,8 +18,9 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark">
-
+            android:background="@color/colorPrimaryDark"
+            android:textColorHint="@color/white"
+            android:paddingTop="10dp">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -27,7 +28,6 @@
                 android:hint="@string/email_hint"
                 android:fontFamily="sans-serif"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"
                 android:inputType="textEmailAddress"
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
@@ -35,14 +35,13 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/white"
             android:background="@color/colorPrimaryDark">
-
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/password"
                 android:textColor="@color/white"
-                android:textColorHint="@color/white"
                 android:hint="@string/password_hint"
                 android:fontFamily="sans-serif"
                 android:inputType="textPassword"
