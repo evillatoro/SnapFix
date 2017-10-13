@@ -1,76 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="3"
     tools:context="edwinvillatoro.snapfix.NoPictureActivity">
 
-    <ImageView
-        android:id="@+id/imageInActivity"
-        android:layout_width="250sp"
-        android:layout_height="250sp"
-        android:layout_marginTop="20sp"
-        app:srcCompat="@android:drawable/btn_star"
-        android:layout_below="@+id/activity_no_picture_toolbar_include"
-        android:layout_centerHorizontal="true" />
-
-    <Spinner
-        android:id="@+id/noPic_problemTypeBox"
-        android:layout_marginTop="25sp"
-        android:layout_width="300sp"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageInActivity"
-        android:layout_alignLeft="@+id/noPic_locationBox"
-        android:layout_alignRight="@+id/noPic_locationBox" />
+        android:background="@color/colorPrimary"
+        android:layout_weight="3">
 
-    <TextView
-        android:id="@+id/noPic_locationBox"
-        android:layout_width="300sp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/imageInActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/btn_star_big_on"
+                android:layout_centerHorizontal="true" />
+
+            <Spinner
+                android:id="@+id/noPic_problemTypeBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/noPic_locationBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/colorAccent"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/noPic_descriptionBox"
+                android:hint="Describe the problem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/colorAccent"
+                android:textSize="18sp"
+                android:maxLines="5"
+                android:gravity="top|start"
+                android:inputType="textMultiLine|text|textCapSentences|textAutoCorrect"
+                style="@style/Widget.AppCompat.EditText"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/noPic_problemTypeBox"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20sp"
-        android:background="@android:color/background_light"
-        android:textColor="@android:color/black"
-        android:textSize="16sp" />
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_weight="1"
+        style="?android:buttonBarStyle">
+        <Button
+            android:id="@+id/noPic_cancelButton"
+            android:text="@string/cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            style="?android:buttonBarButtonStyle"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@color/light_gray"/>
+        <Button
+            android:id="@+id/noPic_submitButton"
+            android:text="@string/submit_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            style="?android:buttonBarButtonStyle"/>
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/noPic_descriptionBox"
-        android:hint="Describe the problem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20sp"
-        android:ems="10"
-        android:maxLines="5"
-        android:gravity="top|left"
-        android:inputType="textMultiLine|text|textCapSentences|textAutoCorrect"
-        android:layout_below="@+id/noPic_locationBox"
-        android:layout_alignLeft="@+id/noPic_locationBox"
-        android:layout_alignStart="@+id/noPic_locationBox"
-        android:layout_alignRight="@+id/noPic_locationBox"
-        android:layout_alignEnd="@+id/noPic_locationBox"
-        style="@style/Widget.AppCompat.EditText"/>
 
-
-    <Button
-        android:id="@+id/noPic_submitButton"
-        android:text="Submit"
-        android:background="@android:color/holo_blue_light"
-        android:layout_width="90sp"
-        android:layout_height="40sp"
-        android:layout_alignRight="@+id/noPic_locationBox"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="25sp" />
-
-    <Button
-        android:id="@+id/noPic_cancelButton"
-        android:text="Cancel"
-        android:background="@android:color/holo_red_light"
-        android:layout_width="90sp"
-        android:layout_height="40sp"
-        android:layout_alignLeft="@+id/noPic_locationBox"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="25sp" />
-
-</RelativeLayout>
+</LinearLayout>
