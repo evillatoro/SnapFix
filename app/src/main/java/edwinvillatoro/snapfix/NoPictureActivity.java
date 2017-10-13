@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +44,7 @@ public class NoPictureActivity extends AppCompatActivity {
     private Spinner typeSpinner;
     private TextView locationView;
     private EditText descriptionBox;
-    private Button submitButton, cancelButton;
+    private LinearLayout submitButton, cancelButton;
 
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
@@ -64,8 +65,8 @@ public class NoPictureActivity extends AppCompatActivity {
         typeSpinner = (Spinner) findViewById(R.id.noPic_problemTypeBox);
         locationView = (TextView) findViewById(R.id.noPic_locationBox);
         descriptionBox = (EditText) findViewById(R.id.noPic_descriptionBox);
-        submitButton = (Button) findViewById(R.id.noPic_submitButton);
-        cancelButton = (Button) findViewById(R.id.noPic_cancelButton);
+        submitButton = (LinearLayout) findViewById(R.id.noPic_submitButton);
+        cancelButton = (LinearLayout) findViewById(R.id.noPic_cancelButton);
         imageView = (ImageView) findViewById(R.id.imageInActivity);
 
 

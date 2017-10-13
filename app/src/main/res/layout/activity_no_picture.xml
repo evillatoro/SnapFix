@@ -65,36 +65,68 @@
     </ScrollView>
 
 
-
     <LinearLayout
+        style="?android:buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
         android:layout_weight="1"
-        style="?android:buttonBarStyle">
-        <Button
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
             android:id="@+id/noPic_cancelButton"
-            android:text="@string/cancel_btn"
-            android:layout_width="wrap_content"
+            style="?android:buttonBarButtonStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            style="?android:buttonBarButtonStyle"/>
+            android:layout_weight="1"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/cancel_button"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingTop="3dp"
+                android:text="@string/cancel_btn"
+                android:textColor="@color/colorPrimary" />
+        </LinearLayout>
+
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:background="@color/light_gray"/>
-        <Button
+            android:background="@color/light_gray" />
+
+        <LinearLayout
             android:id="@+id/noPic_submitButton"
-            android:text="@string/submit_btn"
-            android:layout_width="wrap_content"
+            style="?android:buttonBarButtonStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            style="?android:buttonBarButtonStyle"/>
+            android:layout_weight="1"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/submit_button"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingTop="3dp"
+                android:text="@string/submit_btn"
+                android:textColor="@color/colorPrimary" />
+        </LinearLayout>
     </LinearLayout>
 
 
