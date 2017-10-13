@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colorAccent"
+    android:background="@color/white"
     tools:context="edwinvillatoro.snapfix.SignupActivity">
 
 
@@ -49,8 +49,8 @@
         android:layout_marginTop="40dp"
         android:text="Register"
         android:textSize="18dp"
-        android:background="@color/background"
-        android:textColor="@color/colorPrimary"
+        android:background="@color/white"
+        android:textColor="@color/white"
         android:textStyle="bold" />
 
     <Button
@@ -61,6 +61,6 @@
         android:background="@null"
         android:text="Already have an account? Sign in now."
         android:textAllCaps="false"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/white" />
 
 </LinearLayout>

@@ -25,49 +25,49 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = "LoginActivity";
-    private EditText emailText, passwordText;
-    private Button loginButton, resetButton, registerButton;
-    private FirebaseAuth auth;
 
-    private FirebaseDatabase database;
-    DatabaseReference root = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference users = root.child("users");
-    private FirebaseUser currentUser;
+    private static final String TAG = "LoginActivity";
+    private EditText mEmailInput, mPasswordInput;
+    private Button mBtnLogin, mBtnReset, mBtnRegister;
+    private FirebaseAuth auth;
+    private DatabaseReference mUsersReference;
+    private FirebaseUser mCurrentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        auth = FirebaseAuth.getInstance();
+        mEmailInput = (EditText) findViewById(R.id.email);
+        mPasswordInput = (EditText) findViewById(R.id.password);
+        mBtnRegister = (Button) findViewById(R.id.register_button);
+        mBtnLogin = (Button) findViewById(R.id.login_button);
+        mBtnReset = (Button) findViewById(R.id.reset_button);
 
+        // initialze a database reference pointing at the users
+        mUsersReference = FirebaseDatabase.getInstance().getReference().child("users");
+        // initialize FirebaseAuth instance
+        auth = FirebaseAuth.getInstance();
+        // don't have to sign in if never signed out
         if(auth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
 
-        emailText = (EditText) findViewById(R.id.email);
-        passwordText = (EditText) findViewById(R.id.password);
-        registerButton = (Button) findViewById(R.id.register_button);
-        loginButton = (Button) findViewById(R.id.login_button);
-        resetButton = (Button) findViewById(R.id.reset_button);
-
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        mBtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), SignupActivity.class));
+                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
                 finish();
             }
         });
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchLoginIntent();
             }
         });
-
-        resetButton.setOnClickListener(new View.OnClickListener() {
+        mBtnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchSendEmailIntent();
@@ -75,16 +75,17 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
     private void launchLoginIntent() {
-        String email = emailText.getText().toString().trim();
-        String password = passwordText.getText().toString().trim();
+        String email = mEmailInput.getText().toString().trim();
+        String password = mPasswordInput.getText().toString().trim();
 
         if(TextUtils.isEmpty(email)) {
-            Toast.makeText(getApplicationContext(), "Email address is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.require_email, Toast.LENGTH_SHORT).show();
             return;
         }
         if(TextUtils.isEmpty(password)) {
-            Toast.makeText(getApplicationContext(), "Password is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.require_password, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -93,20 +94,24 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, R.string.login_fail,
+                                    Toast.LENGTH_SHORT).show();
                         } else {
                             //look up user type
-                            currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                            final String id = currentUser.getUid();
-                            users.addListenerForSingleValueEvent(new ValueEventListener() {
+                            mCurrentUser = auth.getCurrentUser();
+                            final String id = mCurrentUser.getUid();
+                            mUsersReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    String accountType = (String)dataSnapshot.child(id).child("type").getValue();
-                                    Intent goToMainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                    String accountType = (String) dataSnapshot.child(id)
+                                            .child("type").getValue();
+                                    Intent goToMainActivityIntent = new Intent(LoginActivity.this,
+                                            MainActivity.class);
                                     if (accountType == null) {
                                         goToMainActivityIntent.putExtra("userType", "user");
                                         goToMainActivityIntent.putExtra("userID", id);
                                         startActivity(goToMainActivityIntent);
+                                        finish();
                                     } else {
                                         // else the account is a worker or manager
                                         Log.d(TAG, "account is a " + accountType);
@@ -116,13 +121,11 @@ public class LoginActivity extends AppCompatActivity {
                                         finish();
                                     }
                                 }
-
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
 
                                 }
                             });
-                            finish();
                         }
                     }
                 });
@@ -140,26 +143,29 @@ public class LoginActivity extends AppCompatActivity {
                 dialog.cancel();
             }
         });
+
+        // TODO : fix bug when click "OK" but input is empty
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String email = inputScreen.getText().toString().trim();
-
-                if(TextUtils.isEmpty(email)) {
-                    Toast.makeText(LoginActivity.this, "Email is not yet registered.", Toast.LENGTH_SHORT).show();
-                }
-
-                auth.sendPasswordResetEmail(email)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()) {
-                                    Toast.makeText(LoginActivity.this, "An email has been sent with instructions for resetting password.", Toast.LENGTH_LONG).show();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "Failed to send reset email. Please try again.", Toast.LENGTH_LONG).show();
+                if(!TextUtils.isEmpty(email)) {
+                    auth.sendPasswordResetEmail(email)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()) {
+                                        Toast.makeText(LoginActivity.this, R.string.reset_email_success,
+                                                Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, R.string.reset_email_fail,
+                                                Toast.LENGTH_LONG).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
+                dialog.cancel();
+
             }
         });
         builder.create().show();

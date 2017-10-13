@@ -5,5 +5,15 @@
     <string name="gallery_btn">Gallery</string>
     <string name="camera_btn">Camera</string>
     <string name="no_picture_btn">No Picture</string>
+    <string name="register_prompt">Not registered yet? Sign up now.</string>
+    <string name="forgot_password_prompt">Forgot Password</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login_btn">Sign In</string>
+    <string name="reset_email_success">"An email has been sent with instructions for resetting password."</string>
+    <string name="reset_email_fail">"Failed to send reset email. Please try again."</string>
+    <string name="require_email">Email address is required</string>
+    <string name="require_password">Password is required (more than 6 chars)</string>
+    <string name="login_fail">Authentication failed. Please try again.</string>
 
 </resources>
