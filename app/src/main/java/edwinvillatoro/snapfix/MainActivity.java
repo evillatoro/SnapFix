@@ -130,7 +130,8 @@ public class MainActivity
         });
         mBtnChooseFromGallery.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {launchGalleryIntent();
+            public void onClick(View view) {
+                launchGalleryIntent();
             }
         });
         mBtnNoPicture.setOnClickListener(new View.OnClickListener() {
@@ -156,8 +157,8 @@ public class MainActivity
         drawer.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //navigationView.setNavigationItemSelectedListener(this);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         //TODO: check permissions for going into gallery
         checkPermissions();
