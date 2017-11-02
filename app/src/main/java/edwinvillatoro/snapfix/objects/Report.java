@@ -10,8 +10,9 @@ public class Report {
     private String location;
     private String description;
     private String assigned_to;
+    private String imageID;
 
-    public Report(String id, String userID, String timestamp, String problem_type, String location, String description, String assigned_to) {
+    public Report(String id, String userID, String timestamp, String problem_type, String location, String description, String assigned_to, String imageID) {
         this.id = id;
         this.userID = userID;
         this.timestamp = timestamp;
@@ -19,6 +20,18 @@ public class Report {
         this.location = location;
         this.description = description;
         this.assigned_to = assigned_to;
+        this.imageID = imageID;
+    }
+
+    public Report() {
+        this.id = id;
+        this.userID = userID;
+        this.timestamp = timestamp;
+        this.problem_type = problem_type;
+        this.location = location;
+        this.description = description;
+        this.assigned_to = assigned_to;
+        this.imageID = imageID;
     }
 
     public String getId() {
@@ -47,4 +60,11 @@ public class Report {
 
     public void setAssigned_to(String assigned) { assigned_to = assigned; }
 
+    public String getImageID() {
+        return imageID;
+    }
+
+    public void setImageID(String imageID) {
+        this.imageID = imageID;
+    }
 }

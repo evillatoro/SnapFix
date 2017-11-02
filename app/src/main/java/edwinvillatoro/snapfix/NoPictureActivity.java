@@ -1,7 +1,6 @@
 package edwinvillatoro.snapfix;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
@@ -12,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -54,8 +52,6 @@ public class NoPictureActivity extends AppCompatActivity {
     private ImageView imageView;
     private ProgressDialog mProgressDialog;
     private Bitmap mImageBitmap;
-    //private String type, uid;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +78,7 @@ public class NoPictureActivity extends AppCompatActivity {
 
         mImageBitmap = null;
         Bundle bundle = getIntent().getExtras();
-        //type = bundle.getString("userType");
-        //uid = bundle.getString("userID");
-        //bundle.getBoolean("picture", true)
+
         if (bundle != null) {
             if (bundle.getBoolean("camera")) {
                 mImageBitmap = getIntent().getExtras().getParcelable("imageBitmap");
@@ -139,13 +133,15 @@ public class NoPictureActivity extends AppCompatActivity {
             String timestamp = sdf.format(date);
             String uid = mCurrentUser.getUid();
             String assigned_to = "";
+            String imageID = "filename_" + id;
+            //TODO: make imageID blank if no picture is used in report
 
             NumberFormat nf = NumberFormat.getInstance();
             nf.setMaximumFractionDigits(4);
             String location = nf.format(latitude) + "," + nf.format(longitude);
 
             //String id = mDatabase.push().getKey();
-            Report report = new Report(id, uid, timestamp, type, location, description, assigned_to);
+            Report report = new Report(id, uid, timestamp, type, location, description, assigned_to, imageID);
             mDatabase.child(id).setValue(report);
             uploadPictureToDatabase(id);
         } else {

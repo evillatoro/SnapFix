@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,6 +51,7 @@ public class MainActivity
     private List<Report> mReportsList = new ArrayList<>();
     private ReportAdapter mReportAdapter;
     private String mUserType, mUserID;
+    private Button reportDetailButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +97,19 @@ public class MainActivity
                         Log.d("Database Error", "Cancelled");
                     }
                 });
+
+        //TODO: delete after report list has been made clickable
+        reportDetailButton = (Button) findViewById(R.id.reportDetailButton);
+        reportDetailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ReportDetail.class);
+                // Only need to send id as extra to ReportDetail Activity to get information
+                intent.putExtra("id", "1509651634367");
+                startActivity(intent);
+            }
+        });
+        //TODO: END TODO
 
 
         // populates the report recycleview with values
@@ -177,6 +192,7 @@ public class MainActivity
         String location = "";
         String description = "";
         String assigned_to = "";
+        String imageID = "";
 
         for (Map.Entry<String, Object> entry : reportArr.entrySet()) {
             System.out.println(entry);
@@ -201,13 +217,16 @@ public class MainActivity
             if (entry.getKey().equals("assigned_to")) {
                 assigned_to = (String) entry.getValue();
             }
+            if (entry.getKey().equals("imageID")) {
+                imageID = (String) entry.getValue();
+            }
         }
 
         // workers can only see reports assigned to them
         // regular users can only see reports they submitted
         // managers can see all reports
         Report report = new Report(id, userID, timestamp, problem_type,
-                location, description, assigned_to);
+                location, description, assigned_to, imageID);
         switch (mUserType) {
             case "worker":
                 if (assigned_to.equals(mUserID)) {
