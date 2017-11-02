@@ -14,10 +14,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import static android.content.Context.LOCATION_SERVICE;
 
-/**
- * Created by shiva on 8/4/17.
- */
-
 public class GpsTracker implements LocationListener {
 
     Context context;
