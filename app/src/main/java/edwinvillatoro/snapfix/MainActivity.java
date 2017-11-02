@@ -106,11 +106,19 @@ public class MainActivity
         mToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(mToolbar);
 
-        // only regular users can see the buttons to submit reports
-        if (!mUserType.equals("user")) {
-            mBtnCamera.setVisibility(View.GONE);
-            mBtnNoPicture.setVisibility(View.GONE);
-            mBtnChooseFromGallery.setVisibility(View.GONE);
+        // takes user back to login screen if they closed the application
+        if(mUserType == null) {
+            Log.d(TAG, "Signed out user.");
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        } else {
+            // only regular users can see the buttons to submit reports
+            if (!mUserType.equals("user")) {
+                mBtnCamera.setVisibility(View.GONE);
+                mBtnNoPicture.setVisibility(View.GONE);
+                mBtnChooseFromGallery.setVisibility(View.GONE);
+            }
         }
 
         // button functionality
