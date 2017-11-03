@@ -1,6 +1,7 @@
 package edwinvillatoro.snapfix.objects;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import edwinvillatoro.snapfix.R;
+import edwinvillatoro.snapfix.ReportDetail;
 
 /**
  * Created by Allen on 9/27/2017.
@@ -23,11 +25,24 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         // holder containing variables for display
         public TextView description;
         public TextView timeStamp;
+        public TextView reportId;
+        private final Context context;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            context = itemView.getContext();
             description = (TextView) itemView.findViewById(R.id.report_description);
             timeStamp = (TextView) itemView.findViewById(R.id.time_stamp);
+            reportId = (TextView) itemView.findViewById(R.id.report_id);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ReportDetail.class);
+                    intent.putExtra("id", reportId.getText().toString());
+
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 
@@ -68,6 +83,8 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         des.setText(report.getDescription());
         TextView ts = viewHolder.timeStamp;
         ts.setText(report.getTimestamp());
+        TextView id = viewHolder.reportId;
+        id.setText(report.getId());
     }
 
     // returns the total count of reports in the list

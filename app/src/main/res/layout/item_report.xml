@@ -1,29 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="horizontal"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:paddingTop="10dp"
-android:paddingBottom="10dp"
-android:paddingLeft="25dp"
-    >
-
-    <TextView
-    android:id="@+id/report_description"
-    android:layout_width="0dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:paddingStart="5dp"
-    android:paddingLeft="5dp"
-    />
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="25dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackground"
+>
+
+        <TextView
+            android:id="@+id/report_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="5dp"
+            android:paddingLeft="5dp"
+        ></TextView>
 
 
-    <TextView
-    android:id="@+id/time_stamp"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    />
+        <TextView
+            android:id="@+id/time_stamp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+        ></TextView>
+
+        <RelativeLayout
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:paddingLeft="25dp">
+            <TextView
+                android:id="@+id/report_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:paddingLeft="5dp"
+                android:visibility="invisible"
+                ></TextView>
+        </RelativeLayout>
 
 </LinearLayout>
