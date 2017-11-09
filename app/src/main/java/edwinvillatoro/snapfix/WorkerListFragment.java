@@ -1,30 +1,15 @@
 package edwinvillatoro.snapfix;
 
-import android.Manifest;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
+
 
 
 import com.google.firebase.database.ChildEventListener;
@@ -38,19 +23,29 @@ import java.util.List;
 import java.util.Map;
 
 import edwinvillatoro.snapfix.objects.WorkerAdapter;
-public class WorkerListActivity extends AppCompatActivity {
+public class WorkerListFragment extends Fragment {
     private RecyclerView workersView;
     private List<String> workersList = new ArrayList<>();
     private DatabaseReference db;
     private WorkerAdapter workerAdapter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.workers_list);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.workers_list, container, false);
+        workersView = (RecyclerView) rootView.findViewById(R.id.workers_list);
+        //populate recyclerview
+        workerAdapter = new WorkerAdapter(getActivity(), workersList);
+        workersView.setAdapter(workerAdapter);
+        workersView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         //find the ui element for the list
-        workersView = (RecyclerView) findViewById(R.id.workers_list);
+
 
         //gets a reference to the database, looking at the user list
         db = FirebaseDatabase.getInstance().getReference().child("users");
@@ -77,10 +72,7 @@ public class WorkerListActivity extends AppCompatActivity {
                     }
                 });
 
-        //populate recyclerview
-        workerAdapter = new WorkerAdapter(getApplicationContext(), workersList);
-        workersView.setAdapter(workerAdapter);
-        workersView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     private void updateView(Map<String,Object> workers) {

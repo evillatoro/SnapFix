@@ -1,5 +1,7 @@
 package edwinvillatoro.snapfix;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
@@ -30,6 +32,13 @@ public class ReportDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_detail);
+
+
+        WorkerListFragment workerList = new WorkerListFragment();
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(R.id.workerList, workerList, "workerList");
+        transaction.commit();
 
         // initialize reference to Firebase database, specifically pointing at reports
         mDatabase = FirebaseDatabase.getInstance().getReference().child("reports");
