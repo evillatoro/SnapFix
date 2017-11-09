@@ -54,7 +54,6 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.ViewHolder
     @Override
     public void onBindViewHolder(WorkerAdapter.ViewHolder viewHolder, int position) {
         String nme = this.workers.get(position);
-        // Set report views based on description and timestamp
         TextView nm = viewHolder.name;
         nm.setText(nme);
     }
