@@ -85,11 +85,15 @@ public class WorkerListActivity extends AppCompatActivity {
 
     private void updateView(Map<String,Object> workers) {
         String type = "";
+        String worker = "";
         for (Map.Entry<String, Object> entry : workers.entrySet()) {
+            if (entry.getKey().equals("name")) {
+                worker = (String) entry.getValue();
+            }
             if (entry.getKey().equals("type")){
                 type = (String) entry.getValue();
                 if (type.equals("worker")) {
-                    workersList.add("temporary");
+                    workersList.add(worker);
                 }
             }
         }
