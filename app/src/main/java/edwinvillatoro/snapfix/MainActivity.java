@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -52,6 +53,7 @@ public class MainActivity
     private ReportAdapter mReportAdapter;
     private String mUserType, mUserID;
     private Button reportDetailButton;
+    private Button workersButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +113,16 @@ public class MainActivity
         });
         //TODO: END TODO
 
+        //button that lets managers view workers
+        workersButton = (Button) findViewById(R.id.btnWorkers);
+        workersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, WorkerListActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         // populates the report recycleview with values
         mReportAdapter = new ReportAdapter(getApplicationContext(), mReportsList);
@@ -133,7 +145,12 @@ public class MainActivity
                 mBtnCamera.setVisibility(View.GONE);
                 mBtnNoPicture.setVisibility(View.GONE);
                 mBtnChooseFromGallery.setVisibility(View.GONE);
+            } else {
+                workersButton.setVisibility(View.GONE);
             }
+
+
+
         }
 
         // button functionality
