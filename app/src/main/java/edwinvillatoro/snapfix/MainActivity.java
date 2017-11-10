@@ -20,7 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -116,9 +115,9 @@ public class MainActivity
         } else {
             // only regular users can see the buttons to submit reports
             if (!mUserType.equals("user")) {
-                mBtnCamera.setVisibility(View.GONE);
-                mBtnNoPicture.setVisibility(View.GONE);
-                mBtnChooseFromGallery.setVisibility(View.GONE);
+                mBtnCamera.setVisibility(View.INVISIBLE);
+                mBtnNoPicture.setVisibility(View.INVISIBLE);
+                mBtnChooseFromGallery.setVisibility(View.INVISIBLE);
             }
 
         }
