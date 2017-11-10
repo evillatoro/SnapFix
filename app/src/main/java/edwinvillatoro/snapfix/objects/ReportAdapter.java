@@ -39,7 +39,6 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ReportDetail.class);
                     intent.putExtra("id", reportId.getText().toString());
-
                     context.startActivity(intent);
                 }
             });

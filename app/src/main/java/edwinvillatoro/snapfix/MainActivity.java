@@ -51,8 +51,6 @@ public class MainActivity
     private List<Report> mReportsList = new ArrayList<>();
     private ReportAdapter mReportAdapter;
     private String mUserType, mUserID;
-    private Button reportDetailButton;
-    private Button workersButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,29 +97,6 @@ public class MainActivity
                     }
                 });
 
-        //TODO: delete after report list has been made clickable
-        reportDetailButton = (Button) findViewById(R.id.reportDetailButton);
-        reportDetailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ReportDetail.class);
-                // Only need to send id as extra to ReportDetail Activity to get information
-                intent.putExtra("id", "1509651634367");
-                startActivity(intent);
-            }
-        });
-        //TODO: END TODO
-
-        //button that lets managers view workers
-        workersButton = (Button) findViewById(R.id.btnWorkers);
-        workersButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, WorkerListFragment.class);
-                startActivity(intent);
-            }
-        });
-
 
         // populates the report recycleview with values
         mReportAdapter = new ReportAdapter(getApplicationContext(), mReportsList);
@@ -144,11 +119,7 @@ public class MainActivity
                 mBtnCamera.setVisibility(View.GONE);
                 mBtnNoPicture.setVisibility(View.GONE);
                 mBtnChooseFromGallery.setVisibility(View.GONE);
-            } else {
-                workersButton.setVisibility(View.GONE);
             }
-
-
 
         }
 

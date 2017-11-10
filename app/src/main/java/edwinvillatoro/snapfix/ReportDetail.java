@@ -1,9 +1,12 @@
 package edwinvillatoro.snapfix;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +30,7 @@ public class ReportDetail extends AppCompatActivity {
     private StorageReference mStorage;
     private ImageView imageView;
     private TextView textView;
+    private Button mBtnAssignWorker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +38,13 @@ public class ReportDetail extends AppCompatActivity {
         setContentView(R.layout.activity_report_detail);
 
 
-        WorkerListFragment workerList = new WorkerListFragment();
+        final WorkerListFragment workerList = new WorkerListFragment();
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.add(R.id.workerList, workerList, "workerList");
+        transaction.hide(workerList);
         transaction.commit();
+
 
         // initialize reference to Firebase database, specifically pointing at reports
         mDatabase = FirebaseDatabase.getInstance().getReference().child("reports");
@@ -47,6 +53,7 @@ public class ReportDetail extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.imageFromFirebase);
         textView = (TextView) findViewById(R.id.description);
+        mBtnAssignWorker = (Button) findViewById(R.id.assign_btn);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -93,5 +100,23 @@ public class ReportDetail extends AppCompatActivity {
             });
         }
 
+        mBtnAssignWorker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleWorkerList(workerList);
+            }
+        });
+
+    }
+
+    public void toggleWorkerList(Fragment fragment) {
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        if(fragment.isHidden()) {
+            transaction.show(fragment);
+        } else {
+            transaction.hide(fragment);
+        }
+        transaction.commit();
     }
 }

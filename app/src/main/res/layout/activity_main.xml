@@ -126,18 +126,6 @@
                         android:fontFamily="sans-serif-condensed"/>
                 </LinearLayout>
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/reportDetailButton"
-                    android:text="Report"/>
-
-                <Button
-                    android:id="@+id/btnWorkers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="workers" />
 
             </LinearLayout>
 
