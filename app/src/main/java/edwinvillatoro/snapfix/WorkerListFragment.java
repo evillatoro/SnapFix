@@ -76,6 +76,11 @@ public class WorkerListFragment extends Fragment {
 
     }
 
+
+    public String getSelectedWorker() {
+        return workerAdapter.getSelected();
+    }
+
     private void updateView(Map<String,Object> workers) {
         String type = "";
         String worker = "";

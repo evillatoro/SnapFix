@@ -26,16 +26,31 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.ViewHolder
             super(itemView);
             context = itemView.getContext();
             name = (TextView) itemView.findViewById(R.id.worker_name);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+
+                    if(position != RecyclerView.NO_POSITION) {
+                        String worker = workers.get(position);
+                        selected_worker = worker;
+                        Toast.makeText(v.getContext(), worker, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
 
         @Override
         public void onClick(View view) {
+
             toastMessage("hello");
         }
     }
 
     private List<String> workers;
     private Context context;
+    private String selected_worker;
 
     public WorkerAdapter(Context context, List<String> workers) {
         this.context = context;
@@ -45,6 +60,8 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.ViewHolder
     private Context getContext() {
         return context;
     }
+
+    public String getSelected() { return selected_worker; }
 
     @Override
     public WorkerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

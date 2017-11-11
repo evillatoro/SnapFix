@@ -63,8 +63,8 @@ public class ReportDetail extends AppCompatActivity {
         mBtnAssignWorker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //toggleWorkerList(workerList);
-                assign();
+                toggleWorkerList(workerList);
+                assign(workerList);
             }
         });
 
@@ -134,8 +134,9 @@ public class ReportDetail extends AppCompatActivity {
         transaction.commit();
     }
 
-    private void assign() {
-        mDatabase.child(reportID).child("assigned_to").setValue("MpJaf50WUFYfvSIKz7cWBTDNR8G3");
-        assignedToTV.setText("MpJaf50WUFYfvSIKz7cWBTDNR8G3");
+    private void assign(WorkerListFragment fragment) {
+        String worker = fragment.getSelectedWorker();
+        mDatabase.child(reportID).child("assigned_to").setValue(worker);
+        assignedToTV.setText(worker);
     }
 }
