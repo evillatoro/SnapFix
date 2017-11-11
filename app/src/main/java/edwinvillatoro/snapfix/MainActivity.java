@@ -98,7 +98,7 @@ public class MainActivity
 
 
         // populates the report recycleview with values
-        mReportAdapter = new ReportAdapter(getApplicationContext(), mReportsList);
+        mReportAdapter = new ReportAdapter(getApplicationContext(), mReportsList, mUserType);
         mReportsView.setAdapter(mReportAdapter);
         mReportsView.setLayoutManager(new LinearLayoutManager(this));
 

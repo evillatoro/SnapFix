@@ -60,8 +60,21 @@ public class ReportDetail extends AppCompatActivity {
 
         mBtnAssignWorker = (Button) findViewById(R.id.assign_btn);
 
+        mBtnAssignWorker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //toggleWorkerList(workerList);
+                assign();
+            }
+        });
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
+            String userType = bundle.getString("userType");
+            if (!userType.equals("manager")) {
+                mBtnAssignWorker.setVisibility(View.INVISIBLE);
+            }
+
             reportID = bundle.getString("id");
             // gets the image of the reportID from storage
             StorageReference imagesRef = mStorage.child("images").child("filename_" + reportID);
@@ -107,14 +120,6 @@ public class ReportDetail extends AppCompatActivity {
                 }
             });
         }
-
-        mBtnAssignWorker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //toggleWorkerList(workerList);
-                assign();
-            }
-        });
 
     }
 

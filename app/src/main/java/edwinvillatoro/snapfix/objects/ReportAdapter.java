@@ -28,7 +28,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         public TextView reportId;
         private final Context context;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, final String userType) {
             super(itemView);
             context = itemView.getContext();
             description = (TextView) itemView.findViewById(R.id.report_description);
@@ -39,6 +39,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ReportDetail.class);
                     intent.putExtra("id", reportId.getText().toString());
+                    intent.putExtra("userType", userType);
                     context.startActivity(intent);
                 }
             });
@@ -49,11 +50,12 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     private List<Report> reports;
     // store the context for easy access
     private Context context;
-
+    private String userType;
     // pass in the report list into the constructor
-    public ReportAdapter(Context context, List<Report> reports) {
+    public ReportAdapter(Context context, List<Report> reports, String userType) {
         this.reports = reports;
         this.context = context;
+        this.userType = userType;
     }
 
     // easy access to the context object in the recyclerview
@@ -68,7 +70,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         // inflate the custom layout
         View reportView = inflater.inflate(R.layout.item_report, parent, false);
         // return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(reportView);
+        ViewHolder viewHolder = new ViewHolder(reportView, userType);
         return viewHolder;
     }
 
