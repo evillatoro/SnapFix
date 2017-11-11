@@ -29,7 +29,7 @@ public class ReportDetail extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
     private ImageView imageView;
-    private TextView textView;
+    private TextView descriptionTV, problemTypeTV, locationTV, assignedToTV;
     private Button mBtnAssignWorker;
 
     @Override
@@ -52,12 +52,16 @@ public class ReportDetail extends AppCompatActivity {
         mStorage = FirebaseStorage.getInstance().getReference();
 
         imageView = (ImageView) findViewById(R.id.imageFromFirebase);
-        textView = (TextView) findViewById(R.id.description);
+        descriptionTV = (TextView) findViewById(R.id.description);
+        problemTypeTV = (TextView) findViewById(R.id.problemTypeTV);
+        locationTV = (TextView) findViewById(R.id.locationTV);
+        assignedToTV = (TextView) findViewById(R.id.assignedToTV);
+
         mBtnAssignWorker = (Button) findViewById(R.id.assign_btn);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            String reportID = bundle.getString("id");
+            final String reportID = bundle.getString("id");
             // gets the image of the reportID from storage
             StorageReference imagesRef = mStorage.child("images").child("filename_" + reportID);
 
@@ -75,7 +79,10 @@ public class ReportDetail extends AppCompatActivity {
                     Report report = dataSnapshot.getValue(Report.class);
                     Toast.makeText(getApplicationContext(), "" + report.getId(), Toast.LENGTH_SHORT).show();
                     //TODO: add the rest of the information of the report to the UI
-                    textView.setText(report.getDescription());
+                    descriptionTV.setText(report.getDescription());
+                    problemTypeTV.setText(report.getProblem_type());
+                    locationTV.setText(report.getLocation());
+                    assignedToTV.setText(report.getAssigned_to());
                 }
 
                 @Override

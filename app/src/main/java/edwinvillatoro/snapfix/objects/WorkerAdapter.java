@@ -5,7 +5,6 @@ package edwinvillatoro.snapfix.objects;
  */
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +13,10 @@ import android.widget.TextView;
 
 import java.util.List;
 
-
 import edwinvillatoro.snapfix.R;
 public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.ViewHolder> {
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         // holder containing variables for display
         public TextView name;
         private final Context context;
