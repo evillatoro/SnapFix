@@ -10,13 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import edwinvillatoro.snapfix.R;
 public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.ViewHolder> {
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         // holder containing variables for display
         public TextView name;
         private final Context context;
@@ -25,6 +26,11 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.ViewHolder
             super(itemView);
             context = itemView.getContext();
             name = (TextView) itemView.findViewById(R.id.worker_name);
+        }
+
+        @Override
+        public void onClick(View view) {
+            toastMessage("hello");
         }
     }
 
@@ -59,5 +65,13 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return workers.size();
+    }
+
+    /**
+     * customizable toast
+     * @param message
+     */
+    private void toastMessage(String message){
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -31,6 +31,7 @@ public class ReportDetail extends AppCompatActivity {
     private ImageView imageView;
     private TextView descriptionTV, problemTypeTV, locationTV, assignedToTV;
     private Button mBtnAssignWorker;
+    private String reportID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class ReportDetail extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            final String reportID = bundle.getString("id");
+            reportID = bundle.getString("id");
             // gets the image of the reportID from storage
             StorageReference imagesRef = mStorage.child("images").child("filename_" + reportID);
 
@@ -110,7 +111,8 @@ public class ReportDetail extends AppCompatActivity {
         mBtnAssignWorker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleWorkerList(workerList);
+                //toggleWorkerList(workerList);
+                assign();
             }
         });
 
@@ -125,5 +127,10 @@ public class ReportDetail extends AppCompatActivity {
             transaction.hide(fragment);
         }
         transaction.commit();
+    }
+
+    private void assign() {
+        mDatabase.child(reportID).child("assigned_to").setValue("MpJaf50WUFYfvSIKz7cWBTDNR8G3");
+        assignedToTV.setText("MpJaf50WUFYfvSIKz7cWBTDNR8G3");
     }
 }

@@ -34,7 +34,7 @@ public class WorkerListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.workers_list, container, false);
         workersView = (RecyclerView) rootView.findViewById(R.id.workers_list);
         //populate recyclerview
-        workerAdapter = new WorkerAdapter(getActivity(), workersList);
+        workerAdapter = new WorkerAdapter(this.getActivity(), workersList);
 
         workersView.setAdapter(workerAdapter);
         workersView.setLayoutManager(new LinearLayoutManager(getActivity()));
