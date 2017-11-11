@@ -50,6 +50,7 @@ public class MainActivity
     private List<Report> mReportsList = new ArrayList<>();
     private ReportAdapter mReportAdapter;
     private String mUserType, mUserID;
+    private LinearLayout mButtonPanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class MainActivity
         mBtnChooseFromGallery = (LinearLayout) findViewById(R.id.btnChoose);
         mBtnNoPicture = (LinearLayout) findViewById(R.id.btnNoPicture);
         mReportsView = (RecyclerView) findViewById(R.id.report_list);
+        mButtonPanel = (LinearLayout) findViewById(R.id.button_panel);
 
         // get intent and the user type and ID from LoginActivity
         Intent intent = getIntent();
@@ -115,9 +117,10 @@ public class MainActivity
         } else {
             // only regular users can see the buttons to submit reports
             if (!mUserType.equals("user")) {
-                mBtnCamera.setVisibility(View.INVISIBLE);
+                /*mBtnCamera.setVisibility(View.INVISIBLE);
                 mBtnNoPicture.setVisibility(View.INVISIBLE);
-                mBtnChooseFromGallery.setVisibility(View.INVISIBLE);
+                mBtnChooseFromGallery.setVisibility(View.INVISIBLE);*/
+                mButtonPanel.setVisibility(View.INVISIBLE);
             }
 
         }
@@ -213,7 +216,20 @@ public class MainActivity
         // managers can see all reports
         Report report = new Report(id, userID, timestamp, problem_type,
                 location, description, assigned_to, imageID);
-        switch (mUserType) {
+
+        if(mUserType.equals("worker")) {
+            if (assigned_to.equals(mUserID)) {
+                mReportsList.add(report);
+            }
+        } else if(mUserType.equals("user")) {
+            if (userID.equals(mUserID)) {
+                mReportsList.add(report);
+            }
+        } else {
+            mReportsList.add(report);
+        }
+
+        /*switch (mUserType) {
             case "worker":
                 if (assigned_to.equals(mUserID)) {
                     mReportsList.add(report);
@@ -227,7 +243,7 @@ public class MainActivity
             default:
                 mReportsList.add(report);
                 break;
-        }
+        }*/
 
     }
 
