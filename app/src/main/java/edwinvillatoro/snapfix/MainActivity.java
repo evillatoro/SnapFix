@@ -21,7 +21,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -171,9 +170,6 @@ public class MainActivity
 
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 123);
-
-        Toast.makeText(getApplicationContext(), "" + mWorkerName, Toast.LENGTH_SHORT).show();
-
     }
 
     // retrieves the report data from the datasnapshot and populates the recycleview with reports
