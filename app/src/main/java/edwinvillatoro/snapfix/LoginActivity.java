@@ -117,6 +117,10 @@ public class LoginActivity extends AppCompatActivity {
                                         Log.d(TAG, "account is a " + accountType);
                                         goToMainActivityIntent.putExtra("userType", accountType);
                                         goToMainActivityIntent.putExtra("userID", id);
+                                        if (accountType.equals("worker")) {
+                                            String workerName = (String) dataSnapshot.child(id).child("name").getValue();
+                                            goToMainActivityIntent.putExtra("workerName", workerName);
+                                        }
                                         startActivity(goToMainActivityIntent);
                                         finish();
                                     }

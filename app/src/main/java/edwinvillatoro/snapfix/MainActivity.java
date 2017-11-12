@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -49,7 +50,7 @@ public class MainActivity
     private RecyclerView mReportsView;
     private List<Report> mReportsList = new ArrayList<>();
     private ReportAdapter mReportAdapter;
-    private String mUserType, mUserID;
+    private String mUserType, mUserID, mWorkerName;
     private LinearLayout mButtonPanel;
 
     @Override
@@ -68,6 +69,7 @@ public class MainActivity
         Intent intent = getIntent();
         mUserType = intent.getStringExtra("userType");
         mUserID = intent.getStringExtra("userID");
+        mWorkerName = intent.getStringExtra("workerName");
 
         // initialize reference to Firebase database, specifically pointing at reports
         mDatabase = FirebaseDatabase.getInstance().getReference().child("reports");
@@ -170,6 +172,8 @@ public class MainActivity
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 123);
 
+        Toast.makeText(getApplicationContext(), "" + mWorkerName, Toast.LENGTH_SHORT).show();
+
     }
 
     // retrieves the report data from the datasnapshot and populates the recycleview with reports
@@ -218,7 +222,7 @@ public class MainActivity
                 location, description, assigned_to, imageID);
 
         if(mUserType.equals("worker")) {
-            if (assigned_to.equals(mUserID)) {
+            if (assigned_to.equals(mWorkerName)) {
                 mReportsList.add(report);
             }
         } else if(mUserType.equals("user")) {
