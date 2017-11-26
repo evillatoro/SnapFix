@@ -5,6 +5,7 @@ package edwinvillatoro.snapfix.objects;
  */
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class WorkerAdapter extends RecyclerView.Adapter<WorkerAdapter.ViewHolder
                     if(position != RecyclerView.NO_POSITION) {
                         String worker = workers.get(position);
                         selected_worker = worker;
+
                         Toast.makeText(v.getContext(), worker, Toast.LENGTH_SHORT).show();
                     }
                 }
