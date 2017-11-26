@@ -28,10 +28,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NoPictureActivity" />
+        <activity android:name=".SubmitReportActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".ReportDetail" />
+        <activity android:name=".ReportDetailActivity" />
         <activity android:name=".WorkerListFragment" />
     </application>
 

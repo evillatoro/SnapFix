@@ -142,7 +142,7 @@ public class MainActivity
         mBtnNoPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, NoPictureActivity.class));
+                startActivity(new Intent(MainActivity.this, SubmitReportActivity.class));
             }
         });
 
@@ -264,7 +264,7 @@ public class MainActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Intent intent = new Intent(MainActivity.this, NoPictureActivity.class);
+        Intent intent = new Intent(MainActivity.this, SubmitReportActivity.class);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             // get the camera image
             Bundle extras = data.getExtras();

@@ -24,7 +24,7 @@ import com.google.firebase.storage.StorageReference;
 
 import edwinvillatoro.snapfix.objects.Report;
 
-public class ReportDetail extends AppCompatActivity {
+public class ReportDetailActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private StorageReference mStorage;

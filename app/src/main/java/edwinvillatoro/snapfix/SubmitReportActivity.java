@@ -37,26 +37,25 @@ import java.util.Date;
 import edwinvillatoro.snapfix.objects.NoPictureProblemEnum;
 import edwinvillatoro.snapfix.objects.Report;
 
-public class NoPictureActivity extends AppCompatActivity {
+public class SubmitReportActivity extends AppCompatActivity {
 
     private Spinner typeSpinner;
     private TextView locationView;
     private EditText descriptionBox;
     private LinearLayout submitButton, cancelButton;
+    private ImageView imageView;
+    private ProgressDialog mProgressDialog;
+    private Bitmap mImageBitmap;
 
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
     private FirebaseUser mCurrentUser;
 
-    private Double latitude, longitude;
-    private ImageView imageView;
-    private ProgressDialog mProgressDialog;
-    private Bitmap mImageBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_no_picture);
+        setContentView(R.layout.activity_submit_report);
 
         typeSpinner = (Spinner) findViewById(R.id.noPic_problemTypeBox);
         locationView = (TextView) findViewById(R.id.noPic_locationBox);
@@ -65,15 +64,11 @@ public class NoPictureActivity extends AppCompatActivity {
         cancelButton = (LinearLayout) findViewById(R.id.noPic_cancelButton);
         imageView = (ImageView) findViewById(R.id.imageInActivity);
 
-
         mProgressDialog = new ProgressDialog(this);
 
         // initialize Firebase
-
         mStorage = FirebaseStorage.getInstance().getReference();
-
         mDatabase = FirebaseDatabase.getInstance().getReference("reports");
-
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         mImageBitmap = null;
@@ -100,6 +95,16 @@ public class NoPictureActivity extends AppCompatActivity {
         typeSpinner.setAdapter(new ArrayAdapter<NoPictureProblemEnum>(this,
                 android.R.layout.simple_spinner_item, NoPictureProblemEnum.values()));
 
+        // automatically retrieves and calculates closest GPS address
+        GPSLocationListener gps = new GPSLocationListener(getApplicationContext());
+        Location point = gps.getLocation();
+        if (point == null){
+            Toast.makeText(getApplicationContext(),"Unable to retrieve GPS location",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            locationView.setText(gps.getAddress(point));
+        }
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,60 +115,39 @@ public class NoPictureActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(NoPictureActivity.this, MainActivity.class);
-                //intent.putExtra("userType", type);
-                //intent.putExtra("userID", uid);
-                //startActivity(intent);
                 finish();
             }
         });
 
-        getUserCurrentLocation();
     }
 
 
     private void addReport() {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+
+        String id = Long.toString(date.getTime());
+        String uid = mCurrentUser.getUid();
+        String imageID = "";
+        if(mImageBitmap != null) {
+            imageID = "filename_" + id;
+        }
+        String timestamp = sdf.format(date);
+        String assigned_to = "Pending";
         String type = typeSpinner.getSelectedItem().toString();
         String description = descriptionBox.getText().toString();
+        String location = locationView.getText().toString();
+
 
         if (!TextUtils.isEmpty(description)) {
-            Date date = new Date();
-            String id = Long.toString(date.getTime());
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-            String timestamp = sdf.format(date);
-            String uid = mCurrentUser.getUid();
-            String assigned_to = "";
-            String imageID = "filename_" + id;
-            //TODO: make imageID blank if no picture is used in report
-
-            NumberFormat nf = NumberFormat.getInstance();
-            nf.setMaximumFractionDigits(4);
-            String location = nf.format(latitude) + "," + nf.format(longitude);
-
-            //String id = mDatabase.push().getKey();
             Report report = new Report(id, uid, timestamp, type, location, description, assigned_to, imageID);
             mDatabase.child(id).setValue(report);
             uploadPictureToDatabase(id);
         } else {
             Toast.makeText(this, "The description cannot be left blank", Toast.LENGTH_SHORT).show();
         }
-
     }
 
-    private void getUserCurrentLocation() {
-        GpsTracker gt = new GpsTracker(getApplicationContext());
-        Location l = gt.getLocation();
-        if (l == null){
-            Toast.makeText(getApplicationContext(),"GPS unable to get Value",Toast.LENGTH_SHORT).show();
-        } else {
-            latitude = l.getLatitude();
-            longitude = l.getLongitude();
-            NumberFormat nf = NumberFormat.getInstance();
-            nf.setMaximumFractionDigits(4);
-            //Toast.makeText(getApplicationContext(),"GPS\nLat = "+lat+"\n lon = "+lon,Toast.LENGTH_SHORT).show();
-            locationView.setText(" GPS:     " + nf.format(latitude) + ", " + nf.format(longitude));
-        }
-    }
 
     private void uploadPictureToDatabase(String id) {
         // set the progress dialog
@@ -186,37 +170,26 @@ public class NoPictureActivity extends AppCompatActivity {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    // handle failed upload
                     Toast.makeText(getApplicationContext(), "Uploading failed", Toast.LENGTH_SHORT).show();
                     mProgressDialog.dismiss();
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // handle successful upload
-                    //Toast.makeText(getApplicationContext(), "Uploading successful", Toast.LENGTH_SHORT).show();
                     Toast.makeText(getApplicationContext(), "Your request has been submitted", Toast.LENGTH_SHORT).show();
                     mProgressDialog.dismiss();
-                    //Intent intent = new Intent(NoPictureActivity.this, MainActivity.class);
-                    //intent.putExtra("userType", type);
-                    //intent.putExtra("userID", uid);
-                    //startActivity(intent);
                     finish();
                 }
             });
 
         } else {
-            //Toast.makeText(getApplicationContext(), "Null", Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "Your request has been submitted", Toast.LENGTH_SHORT).show();
             mProgressDialog.dismiss();
-            //Intent intent = new Intent(NoPictureActivity.this, MainActivity.class);
-            //intent.putExtra("userType", type);
-            //intent.putExtra("userID", uid);
-            //startActivity(intent);
             finish();
         }
     }
 
+    // disables back press. Forces user to click cancel to exit
     @Override
     public void onBackPressed() {
 

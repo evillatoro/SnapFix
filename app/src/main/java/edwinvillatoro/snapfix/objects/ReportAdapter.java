@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import edwinvillatoro.snapfix.R;
-import edwinvillatoro.snapfix.ReportDetail;
+import edwinvillatoro.snapfix.ReportDetailActivity;
 
 /**
  * Created by Allen on 9/27/2017.
@@ -37,7 +37,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, ReportDetail.class);
+                    Intent intent = new Intent(context, ReportDetailActivity.class);
                     intent.putExtra("id", reportId.getText().toString());
                     intent.putExtra("userType", userType);
                     context.startActivity(intent);
