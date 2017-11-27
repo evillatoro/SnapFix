@@ -30,7 +30,7 @@ public class ReportDetailActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
     private ImageView imageView;
-    private TextView descriptionTV, problemTypeTV, locationTV, assignedToTV;
+    private TextView descriptionTV, problemTypeTV, locationTV, assignedToTV, arrivalTV;
     private LinearLayout mBtnCancel, mBtnChat;
     private String reportID;
 
@@ -56,6 +56,7 @@ public class ReportDetailActivity extends AppCompatActivity {
         problemTypeTV = (TextView) findViewById(R.id.problemTypeTV);
         locationTV = (TextView) findViewById(R.id.locationTV);
         assignedToTV = (TextView) findViewById(R.id.assignedToTV);
+        arrivalTV = (TextView) findViewById(R.id.arrivalTV);
         mBtnCancel = (LinearLayout) findViewById(R.id.report_detail_cancel);
         mBtnChat = (LinearLayout) findViewById(R.id.report_detail_chat);
 
