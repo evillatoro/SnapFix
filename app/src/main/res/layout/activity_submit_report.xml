@@ -5,18 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="3"
+    android:weightSum="8"
     tools:context="edwinvillatoro.snapfix.SubmitReportActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:background="@color/background">
+        android:layout_height="0dp"
+        android:layout_weight="7">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:weightSum="4">
@@ -27,55 +26,51 @@
                 android:layout_height="wrap_content"
                 android:scaleType="fitXY"
                 android:layout_centerHorizontal="true"
-                app:srcCompat="@android:drawable/btn_star_big_on"
+                app:srcCompat="@drawable/cancel_button"
                 android:layout_weight="1"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_weight="1"
-                android:weightSum="3">
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_height="30dp"
                     android:background="@color/colorPrimary"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:text="Problem Type"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorSecondary"
                     android:textSize="18dp"
                     android:textStyle="bold"></TextView>
 
                 <Spinner
                     android:id="@+id/noPic_problemTypeBox"
-                    android:background="@color/background"
+                    android:background="@color/backgroundLight"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="30dp"
                     android:gravity="center_vertical" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_weight="1"
-                android:weightSum="3">
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_height="30dp"
                     android:background="@color/colorPrimary"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:text="Location"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorSecondary"
                     android:textSize="18dp"
                     android:textStyle="bold"></TextView>
 
@@ -83,62 +78,58 @@
                     android:id="@+id/noPic_locationBox"
                     android:background="@color/background"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="30dp"
                     android:paddingLeft="10dp"
                     android:paddingTop="5dp"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorSecondaryDark"
                     android:textSize="16dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_weight="1"
-                android:weightSum="3">
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_height="30dp"
                     android:background="@color/colorPrimary"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:text="Problem Description"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorSecondary"
                     android:textSize="18dp"
                     android:textStyle="bold"></TextView>
 
                 <EditText
                     android:id="@+id/noPic_descriptionBox"
                     style="@style/Widget.AppCompat.EditText"
-                    android:background="@color/background"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
                     android:gravity="top|start"
                     android:hint="Please enter a description."
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/light_gray"
                     android:inputType="textMultiLine|text|textCapSentences|textAutoCorrect"
-                    android:maxLines="6"
+                    android:maxLines="5"
+                    android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
                     android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
+                    android:textColor="@color/colorSecondaryDark"
+                    android:textColorHint="@color/light_gray"
                     android:textSize="16sp" />
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
-
     <LinearLayout
         style="?android:buttonBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="@color/backgroundLight"
         android:orientation="horizontal"
         android:weightSum="2">
 
@@ -162,15 +153,15 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
                 android:paddingTop="3dp"
-                android:text="@string/cancel_btn"
-                android:textColor="@color/colorPrimary" />
+                android:textSize="16dp"
+                android:text="@string/cancel_btn" />
         </LinearLayout>
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
             android:background="@color/light_gray" />
 
         <LinearLayout
@@ -193,8 +184,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
                 android:paddingTop="3dp"
-                android:text="@string/submit_btn"
-                android:textColor="@color/colorPrimary" />
+                android:textSize="16dp"
+                android:text="@string/submit_btn"/>
         </LinearLayout>
     </LinearLayout>
 

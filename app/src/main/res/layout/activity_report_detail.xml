@@ -39,7 +39,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="8"
-                    android:textColor="@color/black"
+                    android:textColor="@color/colorSecondaryDark"
+                    android:textStyle="bold"
                     android:background="@color/background"
                     android:gravity="center_vertical|center_horizontal"
                     android:textSize="18sp" />
@@ -60,7 +61,8 @@
                     android:text="Problem Type"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorSecondary"
+                    android:textStyle="bold"
                     android:background="@color/colorPrimary"
                     android:textSize="16sp" />
 
@@ -89,8 +91,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:text="Assigned Worker"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorSecondary"
                     android:textSize="16sp"
+                    android:textStyle="bold"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:background="@color/colorPrimary"/>
@@ -158,15 +161,14 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
                 android:paddingTop="3dp"
-                android:text="@string/cancel_btn"
-                android:textColor="@color/colorPrimary" />
+                android:text="@string/cancel_btn" />
         </LinearLayout>
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
             android:background="@color/light_gray" />
 
         <LinearLayout
@@ -189,8 +191,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
                 android:paddingTop="3dp"
-                android:text="@string/chat_btn"
-                android:textColor="@color/colorPrimary" />
+                android:text="@string/chat_btn" />
         </LinearLayout>
     </LinearLayout>
 
