@@ -18,6 +18,7 @@
             android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/type_icon"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     app:srcCompat="@android:drawable/btn_star_big_on"/>
@@ -32,19 +33,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:gravity="center_vertical"
-                            android:textColor="@color/white"
+                            android:textColor="@color/colorPrimaryDark"
                             android:paddingLeft="10dp"
                             android:textSize="18dp"
-                            android:background="@color/light_gray"></TextView>
+                            android:background="@color/backgroundLight"></TextView>
 
                         <TextView
                             android:id="@+id/time_stamp"
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
                             android:textSize="14dp"
-                            android:textStyle="bold"
-                            android:paddingLeft="10dp"
-                            android:gravity="center_vertical"
+                            android:paddingRight="10dp"
+                            android:gravity="center_vertical|right"
                             android:background="@color/background"></TextView>
                 </LinearLayout>
         </LinearLayout>

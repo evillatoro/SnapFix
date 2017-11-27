@@ -2,10 +2,12 @@ package edwinvillatoro.snapfix.objects;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -23,15 +25,17 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     // provide a direct reference to each of the views
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // holder containing variables for display
-        public TextView description;
-        public TextView timeStamp;
-        public TextView reportId;
+        private ImageView image;
+        private TextView location;
+        private TextView timeStamp;
+        private TextView reportId;
         private final Context context;
 
         public ViewHolder(View itemView, final String userType) {
             super(itemView);
             context = itemView.getContext();
-            description = (TextView) itemView.findViewById(R.id.report_description);
+            image = (ImageView) itemView.findViewById(R.id.type_icon);
+            location = (TextView) itemView.findViewById(R.id.report_description);
             timeStamp = (TextView) itemView.findViewById(R.id.time_stamp);
             reportId = (TextView) itemView.findViewById(R.id.report_id);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -79,13 +83,23 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     public void onBindViewHolder(ReportAdapter.ViewHolder viewHolder, int position) {
         // Get the report model from position
         Report report = this.reports.get(position);
-        // Set report views based on description and timestamp
-        TextView des = viewHolder.description;
-        des.setText(report.getLocation());
-        TextView ts = viewHolder.timeStamp;
-        ts.setText(report.getTimestamp());
-        TextView id = viewHolder.reportId;
-        id.setText(report.getId());
+        // Set report views based on location and timestamp
+        ImageView iconView = viewHolder.image;
+        TextView locationView = viewHolder.location;
+        TextView dateView = viewHolder.timeStamp;
+        TextView idView = viewHolder.reportId;
+
+        String type = report.getProblem_type();
+        if(type.equals(NoPictureProblemEnum.KITCHEN.toString())) {
+            iconView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.kitchen_icon));
+        } else if (type.equals(NoPictureProblemEnum.ACHEAT.toString())) {
+            iconView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ac_icon));
+        } else if (type.equals(NoPictureProblemEnum.PLUMBING.toString())) {
+            iconView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.bathroom_icon));
+        }
+        locationView.setText(report.getLocation());
+        dateView.setText(report.getTimestamp());
+        idView.setText(report.getId());
     }
 
     // returns the total count of reports in the list
@@ -93,11 +107,5 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     public int getItemCount() {
         return reports.size();
     }
-
-    /*public void updateData(List<Report> data) {
-        reports.clear();
-        reports = data;
-        this.notifyDataSetChanged();
-    }*/
 
 }

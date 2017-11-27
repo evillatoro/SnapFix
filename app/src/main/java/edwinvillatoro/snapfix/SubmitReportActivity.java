@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import edwinvillatoro.snapfix.objects.NoPictureProblemEnum;
 import edwinvillatoro.snapfix.objects.Report;
@@ -124,7 +125,7 @@ public class SubmitReportActivity extends AppCompatActivity {
 
     private void addReport() {
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE,  MMM dd, yyyy  (hh:mm)", Locale.ENGLISH);
 
         String id = Long.toString(date.getTime());
         String uid = mCurrentUser.getUid();
