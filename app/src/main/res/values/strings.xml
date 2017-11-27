@@ -14,6 +14,7 @@
     <string name="login_btn">Sign In</string>
     <string name="submit_btn">Submit</string>
     <string name="cancel_btn">Cancel</string>
+    <string name="chat_btn">Chat</string>
     <string name="reset_email_success">"An email has been sent with instructions for resetting password."</string>
     <string name="reset_email_fail">"Failed to send reset email. Please try again."</string>
     <string name="require_email">Email address is required</string>

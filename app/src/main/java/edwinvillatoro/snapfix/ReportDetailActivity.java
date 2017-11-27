@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +31,7 @@ public class ReportDetailActivity extends AppCompatActivity {
     private StorageReference mStorage;
     private ImageView imageView;
     private TextView descriptionTV, problemTypeTV, locationTV, assignedToTV;
-    private Button mBtnAssignWorker;
+    private LinearLayout mBtnCancel, mBtnChat;
     private String reportID;
 
     @Override
@@ -38,14 +39,12 @@ public class ReportDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_detail);
 
-
         final WorkerListFragment workerList = new WorkerListFragment();
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.add(R.id.workerList, workerList, "workerList");
         transaction.hide(workerList);
         transaction.commit();
-
 
         // initialize reference to Firebase database, specifically pointing at reports
         mDatabase = FirebaseDatabase.getInstance().getReference().child("reports");
@@ -57,22 +56,27 @@ public class ReportDetailActivity extends AppCompatActivity {
         problemTypeTV = (TextView) findViewById(R.id.problemTypeTV);
         locationTV = (TextView) findViewById(R.id.locationTV);
         assignedToTV = (TextView) findViewById(R.id.assignedToTV);
+        mBtnCancel = (LinearLayout) findViewById(R.id.report_detail_cancel);
+        mBtnChat = (LinearLayout) findViewById(R.id.report_detail_chat);
 
-        mBtnAssignWorker = (Button) findViewById(R.id.assign_btn);
-
-        mBtnAssignWorker.setOnClickListener(new View.OnClickListener() {
+        mBtnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleWorkerList(workerList);
-                assign(workerList);
+                finish();
             }
         });
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             String userType = bundle.getString("userType");
-            if (!userType.equals("manager")) {
-                mBtnAssignWorker.setVisibility(View.INVISIBLE);
+            if (userType.equals("manager")) {
+                assignedToTV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        toggleWorkerList(workerList);
+                        assign(workerList);
+                    }
+                });
             }
 
             reportID = bundle.getString("id");
@@ -91,7 +95,6 @@ public class ReportDetailActivity extends AppCompatActivity {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Report report = dataSnapshot.getValue(Report.class);
-                    Toast.makeText(getApplicationContext(), "" + report.getId(), Toast.LENGTH_SHORT).show();
                     //TODO: add the rest of the information of the report to the UI
                     descriptionTV.setText(report.getDescription());
                     problemTypeTV.setText(report.getProblem_type());
