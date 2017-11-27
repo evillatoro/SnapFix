@@ -124,7 +124,7 @@ public class SubmitReportActivity extends AppCompatActivity {
 
     private void addReport() {
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm");
 
         String id = Long.toString(date.getTime());
         String uid = mCurrentUser.getUid();

@@ -81,7 +81,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         Report report = this.reports.get(position);
         // Set report views based on description and timestamp
         TextView des = viewHolder.description;
-        des.setText(report.getDescription());
+        des.setText(report.getLocation());
         TextView ts = viewHolder.timeStamp;
         ts.setText(report.getTimestamp());
         TextView id = viewHolder.reportId;

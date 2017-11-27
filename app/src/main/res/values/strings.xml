@@ -7,7 +7,7 @@
     <string name="no_picture_btn">No Picture</string>
     <string name="register_prompt">Not registered yet? Sign up now.</string>
     <string name="login_prompt">Already registered? Sign in here.</string>
-    <string name="forgot_password_prompt">Forgot Password</string>
+    <string name="forgot_password_prompt">Forgot password?</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
     <string name="register_btn">Register</string>
