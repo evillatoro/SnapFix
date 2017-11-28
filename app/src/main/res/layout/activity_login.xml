@@ -17,7 +17,10 @@
             android:id="@+id/login_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/logo"
+            android:src="@drawable/sc_logo"
+            android:layout_marginTop="20dp"
+            android:maxHeight="500px"
+            android:maxWidth="500px"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:layout_gravity="center"/>
