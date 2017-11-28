@@ -71,6 +71,8 @@ public class ReportDetailActivity extends AppCompatActivity {
         if (bundle != null) {
             String userType = bundle.getString("userType");
             if (userType.equals("manager")) {
+                mBtnChat.setVisibility(View.GONE);
+
                 assignedToTV.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
