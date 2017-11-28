@@ -136,7 +136,8 @@
                     android:layout_height="50dp"
                     android:layout_weight="5"
                     android:paddingLeft="10dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/dark_gray"
+                    android:text="8 Hrs"
                     android:textSize="16sp"
                     android:gravity="center_vertical"
                     android:background="@color/background"/>
@@ -145,7 +146,7 @@
             <TextView
                 android:id="@+id/description"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:paddingLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:background="@color/background"
@@ -157,7 +158,6 @@
                 android:layout_width="250dp"
                 android:layout_height="150dp"
                 android:layout_gravity="right">
-
             </ScrollView>
 
         </LinearLayout>
