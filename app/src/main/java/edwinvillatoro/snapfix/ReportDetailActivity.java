@@ -85,6 +85,9 @@ public class ReportDetailActivity extends AppCompatActivity {
             reportID = bundle.getString("id");
             // gets the image of the reportID from storage
             StorageReference imagesRef = mStorage.child("images").child("filename_" + reportID);
+            if(imagesRef == null) {
+                imageView.setVisibility(View.GONE);
+            }
 
             // Glide is used to put the image of the report into the image view
             Glide.with(this)

@@ -25,7 +25,7 @@
                 <ImageView
                     android:id="@+id/imageFromFirebase"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="450dp"
                     android:layout_gravity="center_horizontal"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/cancel_button" />
@@ -44,7 +44,7 @@
                         android:layout_weight="8"
                         android:background="@color/background"
                         android:gravity="center_vertical|center_horizontal"
-                        android:textColor="@color/colorSecondaryDark"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -65,7 +65,7 @@
                         android:gravity="center_vertical"
                         android:paddingLeft="10dp"
                         android:text="Problem Type"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/dark_gray"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -97,7 +97,7 @@
                         android:gravity="center_vertical"
                         android:paddingLeft="10dp"
                         android:text="Assigned Worker"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/dark_gray"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -129,7 +129,7 @@
                         android:gravity="center_vertical"
                         android:paddingLeft="10dp"
                         android:text="Estimated Arrival"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/dark_gray"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -141,7 +141,7 @@
                         android:background="@color/background"
                         android:gravity="center_vertical"
                         android:paddingLeft="10dp"
-                        android:text="8 Hrs"
+                        android:text="Pending"
                         android:textColor="@color/dark_gray"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -163,7 +163,7 @@
                 android:layout_width="240dp"
                 android:layout_height="200dp"
                 android:layout_marginTop="150dp"
-                android:layout_gravity="center|right"></ScrollView>
+                android:layout_gravity="bottom|right"></ScrollView>
         </FrameLayout>
 
 
