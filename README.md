@@ -20,6 +20,11 @@ Managers are able to assign workers maintenance requests.
 
 ### Known Bugs:
 - Sometimes the application crashes when re-building onto a device that already has the application on it.
+
+### Missing Functionality:
+- Chat feature between worker and user who submitted the maintenance request
+- Ability to filter maintenance request
+- Ability to change the priority of maintenance request
     
 ## Getting Started - Install Guide
 
