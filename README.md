@@ -8,7 +8,7 @@ Managers are able to assign workers maintenance requests.
   <img src="./SnapFixLogo.png" width="100%"/>
 </p>
 
-## Current Release Notes
+## Current Release Notes v5.1.0
 
 ### New Features:
 - Manager can see a list of active workers.
