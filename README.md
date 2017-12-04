@@ -63,7 +63,7 @@ Android Studio notifies us if we need additional installation.
 
 ## Authors
 * **Allen Chan** - [achan41](https://github.com/achan41)
-* **Ollie Foo**
+* **Ollie Foo** - [olliefoo](https://github.com/olliefoo)
 * **Miles Johnson** - [MilesJ150](https://github.com/MilesJ150)
 * **Bryan Kim** - [bkim360](https://github.com/bkim360)
 * **Edwin Villatoro** - [Edwin Villatoro](https://github.com/evillatoro)
